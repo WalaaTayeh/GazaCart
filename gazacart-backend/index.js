@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 
 const authRoutes = require('./routes/auth');
@@ -27,6 +28,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(express.static(path.join(__dirname, '../gazacart-frontend')));
+
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -37,11 +40,17 @@ app.use('/api/orders', orderRoutes);
 app.use("/uploads", express.static("uploads"));
 
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../gazacart-frontend/index.html'));
+});
+
+
 // Error handler
 app.use((err, req, res, next) => {
 console.error(err.stack);
 res.status(500).json({ error: err.message });
 });
+
 
 
 // Connect to Mongo
