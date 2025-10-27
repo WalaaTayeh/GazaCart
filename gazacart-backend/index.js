@@ -40,10 +40,9 @@ app.use('/api/orders', orderRoutes);
 app.use("/uploads", express.static("uploads"));
 
 
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../gazacart-frontend/index.html'));
 });
-
 
 // Error handler
 app.use((err, req, res, next) => {
