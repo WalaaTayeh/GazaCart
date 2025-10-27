@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const imageUrl =
         store.images && store.images.length > 0
-          ? `http://localhost:5000${store.images[0]}`
+        ? `https://gazacart.onrender.com${store.images[0]}`
           : "images/Component 1.png";
 
       // أصبح كل متجر رابط قابل للنقر يفتح صفحة home.html مع الـ ID
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // جلب المتاجر من السيرفر
   async function fetchStores(endpoint, trackId) {
     try {
-      const res = await fetch(`http://localhost:5000/api/stores${endpoint}`);
+      const res = await fetch(`https://gazacart.onrender.com/api/stores${endpoint}`);
       const stores = await res.json();
       renderStores(trackId, stores);
     } catch (err) {
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       timeout = setTimeout(async () => {
         try {
-          const url = `http://localhost:5000/api/stores/search?q=${encodeURIComponent(query)}`;
+          const url = `https://gazacart.onrender.com/api/stores/search?q=${encodeURIComponent(query)}`;
           const res = await fetch(url);
           if (!res.ok) throw new Error(`HTTP error ${res.status}`);
           const data = await res.json();

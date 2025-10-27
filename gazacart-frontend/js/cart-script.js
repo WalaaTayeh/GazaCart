@@ -209,12 +209,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (receiptFile) formData.append("paymentProof", receiptFile); 
 
 try {
-  const response = await fetch("http://localhost:5000/api/orders", {
-    method: "POST",
-    body: formData,
-    headers: {
-      "Authorization": `Bearer ${currentUser.token}`
-    }
+const response = await fetch("https://gazacart.onrender.com/api/orders", {
+  method: "POST",
+  body: formData,
+  headers: {
+    "Authorization": `Bearer ${currentUser.token}`
+  }
   });
 
   let data;

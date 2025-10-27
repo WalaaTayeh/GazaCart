@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const productsGrid = document.querySelector(".products-grid");
 
   try {
-    const res = await fetch(`http://localhost:5000/api/stores/${storeId}`);
+    const res = await fetch(`https://gazacart.onrender.com/api/stores/${storeId}`);
     if (!res.ok) throw new Error("فشل في جلب بيانات المتجر");
     const store = await res.json();
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     storeDescEl.textContent = store.description || "لا يوجد وصف متاح.";
     storeImgEl.src =
       store.images && store.images.length > 0
-        ? `http://localhost:5000${store.images[0]}`
+        ? `https://gazacart.onrender.com${store.images[0]}`
         : "images/profile.jpg";
 
     const rating = store.rating || 0;
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (favicon) {
       favicon.href =
         store.images && store.images.length > 0
-          ? `http://localhost:5000${store.images[0]}`
+          ? `https://gazacart.onrender.com${store.images[0]}`
           : "images/logocart.svg";
     }
 
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const imageUrl =
           prod.images && prod.images.length > 0
-            ? `http://localhost:5000${prod.images[0]}`
+            ? `https://gazacart.onrender.com${prod.images[0]}`
             : "images/Component 1.png";
 
         const prodRating = prod.rating || 0;

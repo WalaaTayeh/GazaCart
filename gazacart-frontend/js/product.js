@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     // جلب بيانات المنتج الرئيسي
-    const res = await fetch(`http://localhost:5000/api/products/${productId}`);
+    const res = await fetch(`https://gazacart.onrender.com/api/products/${productId}`);
     if (!res.ok) throw new Error("تعذر جلب بيانات المنتج");
 
     const product = await res.json();
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <img 
         src="${
           product.images && product.images.length > 0
-            ? `http://localhost:5000${product.images[0]}`
+            ? `https://gazacart.onrender.com${product.images[0]}`
             : "images/Component 1.png"
         }" 
         alt="${product.name}" 
@@ -72,16 +72,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           storeName,
           product.price,
           product.images && product.images.length > 0
-            ? `http://localhost:5000${product.images[0]}`
+            ? `https://gazacart.onrender.com${product.images[0]}`
             : "images/Component 1.png"
         );
       });
     }
 
     // جلب المنتجات المتعلقة
-    const relatedRes = await fetch(
-      `http://localhost:5000/api/products/${productId}/related`
-    );
+const relatedRes = await fetch(
+  `https://gazacart.onrender.com/api/products/${productId}/related`
+);
+
     const relatedProducts = await relatedRes.json();
 
     relatedGrid.innerHTML = "";
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="card-img">
             <img src="${
               p.images && p.images.length > 0
-                ? `http://localhost:5000${p.images[0]}`
+                ? `https://gazacart.onrender.com${p.images[0]}`
                 : "images/Component 1.png"
             }" alt="${p.name}">
           </div>
@@ -123,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             p.store?.name || "متجر غير معروف",
             p.price,
             p.images && p.images.length > 0
-              ? `http://localhost:5000${p.images[0]}`
+              ? `https://gazacart.onrender.com${p.images[0]}`
               : "images/Component 1.png"
           );
         });

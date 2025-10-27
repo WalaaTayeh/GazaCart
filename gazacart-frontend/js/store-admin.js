@@ -35,14 +35,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ===== جلب بيانات المتجر =====
   async function fetchStore() {
     try {
-      const res = await fetch(`http://localhost:5000/api/stores/${storeId}`);
+      const res = await fetch(`https://gazacart.onrender.com/api/stores/${storeId}`);
       if (!res.ok) throw new Error("فشل في جلب بيانات المتجر");
       store = await res.json();
 
       storeNameEl.textContent = store.name || "اسم المتجر غير متوفر";
       storeDescEl.textContent = store.description || "لا يوجد وصف متاح.";
-      storeImgEl.src = store.images?.[0] ? `http://localhost:5000${store.images[0]}` : "images/profile.jpg";
-
+      storeImgEl.src = store.images?.[0]
+      ? `https://gazacart.onrender.com${store.images[0]}`
+      : "images/profile.jpg";
       const rating = store.rating || 0;
       starsEl.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);
 
@@ -64,7 +65,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     store.productsList.forEach(prod => {
       const card = document.createElement("div");
       card.className = "card";
-      const imageUrl = prod.images?.[0] ? `http://localhost:5000${prod.images[0]}` : "images/Component 1.png";
+      const imageUrl = prod.images?.[0]
+      ? `https://gazacart.onrender.com${prod.images[0]}`
+      : "images/Component 1.png";
+
       const prodRating = prod.rating || 0;
 
       card.innerHTML = `
@@ -87,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       card.querySelector(".btn-delete").addEventListener("click", async () => {
         if (!confirm("هل أنت متأكد من حذف هذا المنتج؟")) return;
         try {
-          const res = await fetch(`http://localhost:5000/api/products/${prod._id}`, {
+          const res = await fetch(`https://gazacart.onrender.com/api/products/${prod._id}`, {
             method: "DELETE",
             headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
           });
@@ -111,7 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (newDesc === null) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/stores/${storeId}`, {
+      const res = await fetch(`https://gazacart.onrender.com/api/stores/${storeId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -147,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   submitEditBtn?.addEventListener("click", async () => {
     if (!currentEditingProduct) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${currentEditingProduct._id}`, {
+      const res = await fetch(`https://gazacart.onrender.com/api/products/${currentEditingProduct._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -187,7 +191,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (let img of addImages.files) formData.append("image", img);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/products`, {
+      const res = await fetch(`https://gazacart.onrender.com/api/products`, {
         method: "POST",
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
