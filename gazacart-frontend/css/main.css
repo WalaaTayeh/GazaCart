@@ -1,13 +1,4 @@
-/*
-|======================================================|
-|           GAZACART MASTER STYLESHEET                 |
-|       دمج وترتيب ملفات CSS الثلاثة: (style.css, style2.css, styles.css)  |
-|======================================================|
-*/
 
-/* ================================================= */
-/* 1. BASE STYLES & ROOT VARIABLES                   */
-/* ================================================= */
 
 /* ========== ROOT COLORS ========== */
 :root {
@@ -64,27 +55,21 @@ body {
     background-color: var(--primary-500);
     color: var(--black-950);
     border: none;
-    padding: 18px 80px; /* تم توحيد البادينج ليناسب الهيرو و الـ Search */
+    padding: 18px 80px; 
     font-size: 16px;
     font-weight: 600;
     border-radius: 10px;
     cursor: pointer;
     transition: background 0.25s ease;
     text-align: center;
-    width: auto; /* يترك تحديد العرض للمكون الذي يستخدمه */
+    width: auto; 
 }
 .btn.yellow:hover {
     background-color: var(--primary-600);
 }
 
 
-/* ================================================= */
 /* 2. HEADER & NAVIGATION COMPONENTS                 */
-/* ================================================= */
-/* ================================================= */
-/* 1. التنسيقات المشتركة (Common Header Styles)      */
-/* هذه التنسيقات تنطبق على Header في جميع الصفحات  */
-/* ================================================= */
 .header {
     background: var(--primary-bg);
     border-bottom: 1px solid var(--black-100);
@@ -113,7 +98,6 @@ body {
     height: 40px;
 }
 
-/* نمط الروابط المشترك في كلتا الواجهتين */
 .nav a {
     text-decoration: none;
     color: var(--black-800);
@@ -126,21 +110,20 @@ body {
 }
 
 
-/* ================================================= */
 /* 2. تنسيقات واجهة العميل (Client-Page Specific)    */
 /* (index.html, product.html, home.html)            */
-/* ================================================= */
+
 
 .client-page .nav {
-    display: flex; /* إظهار الـ Nav الطويلة */
+    display: flex;
     gap: 24px;
     margin: 0;
     justify-content: flex-start;
 }
 
 .client-page .cart {
-    margin-right: auto; /* يدفع السلة لليسار */
-    display: flex; /* إظهار سلة التسوق */
+    margin-right: auto;
+    display: flex;
     align-items: center;
     position: relative;
     cursor: pointer;
@@ -163,33 +146,30 @@ body {
 }
 
 .client-page .dropdown-container {
-    display: none; /* إخفاء قائمة المتجر المنسدلة في واجهة العميل */
+    display: none;
 }
 
 
-/* ================================================= */
-/* 3. تنسيقات واجهة المتجر (Store-Admin-Page Specific)*/
-/* (store.html)                                     */
-/* ================================================= */
+/* 3. تنسيقات واجهة المتجر */
+
 
 .store-admin-page .cart {
-    display: none; /* إخفاء سلة التسوق في واجهة المتجر */
+    display: none; 
 }
 
-/* ملاحظة: الـ Nav في واجهة المتجر تكون قصيرة، لكننا نحتاج إلى إلغاء Margin-right: auto للعربة */
 .store-admin-page .nav {
     display: flex;
     gap: 24px;
-    margin: 0 0 0 40px; /* مسافة للابتعاد عن اللوجو */
+    margin: 0 0 0 40px; 
     justify-content: flex-start;
 }
 
 /* ===== Dropdown - Store Admin Display ===== */
 .store-admin-page .dropdown-container {
     position: relative;
-    display: inline-block; /* إظهار قائمة المتجر المنسدلة */
+    display: inline-block;
     direction: rtl;
-    margin-right: auto; /* يدفع القائمة لليسار لملء الفراغ */
+    margin-right: auto;
 }
 
 .dropdown {
@@ -256,9 +236,7 @@ body {
 }
 
 
-/* ================================================= */
 /* 3. HOME PAGE SECTIONS (Hero, Search, Store Track) */
-/* ================================================= */
 
 /* --- Hero Section --- */
 .hero {
@@ -272,7 +250,7 @@ body {
     justify-content: space-between;
     gap: 60px;
     flex-direction: row-reverse;
-    padding-top: 100px; /* لتعويض ارتفاع الهيدر الثابت */
+    padding-top: 100px;
 }
 
 .hero-img {
@@ -304,7 +282,6 @@ body {
     font-size: clamp(15px, 1.2vw, 19px);
 }
 
-/* --- Search Section --- */
 .search {
     background-color: var(--primary-bg);
     padding: 30px 0;
@@ -334,12 +311,11 @@ body {
 }
 
 .search .btn.yellow {
-    width: 180px; /* تثبيت العرض في السيرش */
-    padding: 18px 0; /* زيادة الطول */
+    width: 180px; 
+    padding: 18px 0;
     font-size: 18px;
 }
 
-/* --- Store Sections (أقسام المتاجر) --- */
 .store-section {
     padding: 40px 0;
 }
@@ -420,22 +396,16 @@ body {
 }
 
 
-/* ================================================= */
 /* 4. STORE PAGE SECTIONS (Banner, Profile, Products)*/
-/* ================================================= */
-
-/* --- Banner --- */
 .banner {
-    /* أضف هذا إذا لم يكن موجوداً */
     width: 85%;
-    height: 400px; /* مثال لارتفاع معقول */
+    height: 400px;
     background-color: #ccc;
     margin: 82px auto 20px auto; 
-    border-radius: 12p; /* لتصبح الصورة دائرية */
+    border-radius: 12p;
     position: relative;
 }
 
-/* --- Profile --- */
 .profile {
     display: flex;
     align-items: center;
@@ -447,7 +417,7 @@ body {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    background: var(--black-200); /* تم توحيد اللون */
+    background: var(--black-200);
     border: 4px solid var(--white);
 }
 
@@ -468,14 +438,13 @@ body {
     color: var(--primary-500);
     letter-spacing: 2px;
 }
-/* إزالة الخط من رابط الكارت */
+
 .product-link {
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-/* عند تمرير الماوس */
 .product-link:hover {
   text-decoration: none;
   color: inherit;
@@ -488,8 +457,6 @@ body {
   transform: translateY(-5px);
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
-
 
 /* --- About Section --- */
 .about {
@@ -588,7 +555,7 @@ body {
 }
 .card .stars {
     font-size: 20px;
-    color: var(--black-600); /* لون النجوم في الكارد */
+    color: var(--black-600);
     white-space: nowrap;
 }
 
@@ -644,58 +611,54 @@ body {
     background: var(--primary-600);
 }
 
-
-/* ================================================= */
 /* 5. PRODUCT PAGE SECTIONS                          */
-/* ================================================= */
 
 .product {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 50px;
-  padding: 40px;
-  padding-top: 80px;
-  flex-wrap: wrap;
- 
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    padding: 40px;
+    padding-top: 80px;
+    flex-wrap: wrap;
 }
 
 .product-image {
-  width: 400px;
-  height: 350px;
-  background: var(--black-300);
-  border-radius: 10px;
-      flex-shrink: 0;
+    width: 400px;
+    height: 350px;
+    background: var(--black-300);
+    border-radius: 10px;
+    flex-shrink: 0;
 
 }
 
 .product-details h2 {
-  margin: 0;
-  font-size: 24px;
-  color: var(--black-900);
+    margin: 0;
+    font-size: 24px;
+    color: var(--black-900);
 }
 
 .stars {
-  color: var(--black-600);
-  margin: 5px 0;
+    color: var(--black-600);
+    margin: 5px 0;
 }
 
 .product-details p {
-  margin: 15px 0;
-  line-height: 1.6;
-  color: var(--black-800);
+    margin: 15px 0;
+    line-height: 1.6;
+    color: var(--black-800);
 }
 
 .add-product {
-  background: var(--primary-500);
-  color: var(--black-900);
-  padding: 15px 60px;
-  border: none;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease;
+    background: var(--primary-500);
+    color: var(--black-900);
+    padding: 15px 60px;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .add-product:hover {
@@ -710,17 +673,14 @@ background: var(--primary-600);
   display: block;
 }
 
-/* إزالة الخط السفلي عن الروابط في كاردات المنتجات ذات صلة */
 
 .products-grid .card {
-  text-decoration: none; /* إزالة underline */
-  display: block; /* يجعل الكارد كامل قابل للنقر */
+  text-decoration: none; 
+  display: block;
 }
 
 
-/* ================================================= */
 /* 6. MODALS & POPUPS (Auth, Cart, Checkout, Done)   */
-/* ================================================= */
 
 /* --- Modal Base (Used for Auth & Popups) --- */
 .modal{
@@ -859,7 +819,7 @@ background: var(--primary-600);
 .modal-form .phone-input {
   display: flex;
   align-items: center;
-  flex-direction: row-reverse; /* الصورة يسار، النص يمين */
+  flex-direction: row-reverse; 
   background: #F2F2F2;
   border-radius: 16px;
   border: none;
@@ -874,7 +834,7 @@ background: var(--primary-600);
   height: 16px;
   border-radius: 3px;
   object-fit: cover;
-  margin-left: 10px; /* مسافة بين الصورة والنص */
+  margin-left: 10px;
 }
 
 /* input داخل phone-input */
@@ -888,13 +848,13 @@ background: var(--primary-600);
   outline: none;
   text-align: right;
   direction: ltr;
-  height: 100%; /* ✅ ياخد ارتفاع المربع */
+  height: 100%; 
   padding-top: 25px;
 }
 
 /* ===== Buttons ===== */
 .modal-form .btn.yellow {
-  background: #F4C400; /* اللون الأصفر */
+  background: #F4C400; 
   color: var(--black-950);
   font-size: 16px;
   font-weight: 700;
@@ -979,7 +939,7 @@ background: var(--primary-600);
 }
 
 .delete-btn {
-      width: 40px;                     /* مربع */
+      width: 40px;          
   height: 40px;
  background: var(--error-bg);
   border: none;
@@ -1019,7 +979,6 @@ background: var(--primary-600);
 }
 
 /* --- Checkout Popup --- */
-/* --- Checkout Popup --- */
 .checkout-popup {
   width: 500px;
   background: var(--white);
@@ -1055,14 +1014,14 @@ background: var(--primary-600);
 /* ===== Inputs ===== */
 .checkout-body input {
 width: 100%;
-height: 50px; /* توحيد الارتفاع */
+height: 50px;
 width: 425px;
 padding: 10px 14px;
 border: none;
-border-radius: 16px; /* زوايا ناعمة */
-background: #F2F2F2; /* اللون الرمادي من التصميم */
+border-radius: 16px; 
+background: #F2F2F2; 
 font-size: 15px;
-color: #5C5C5C; /* لون النص */
+color: #5C5C5C;
 box-sizing: border-box;
 outline: none;
 }
@@ -1077,7 +1036,7 @@ outline: none;
 .checkout-body .phone-input {
 display: flex;
 align-items: center;
-flex-direction: row-reverse; /* يجعل الصورة على اليسار والنص على اليمين */
+flex-direction: row-reverse;
 background: #F2F2F2;
 border-radius: 16px;
 border: none;
@@ -1091,7 +1050,7 @@ width: 400px;
   height: 16px;
   border-radius: 3px;
   object-fit: cover;
-  margin-left: 10px; /* مسافة بين الصورة والنص */
+  margin-left: 10px;
 }
 
 /* input داخل phone-input */
@@ -1102,14 +1061,14 @@ width: 400px;
   color: #5C5C5C;
   font-size: 15px;
   outline: none;
-  text-align: right; /* محاذاة النص لليسار */
-  direction: rtl; /* الأرقام تكون من اليسار إلى اليمين */
+  text-align: right; 
+  direction: rtl;
 }
 
 /* ===== Confirm Button ===== */
 .btn-confirm {
   width: 100%;
-  background: #F4C400; /* اللون الأصفر */
+  background: #F4C400;
   color: var(--black-950);
   font-size: 16px;
   font-weight: 700;
@@ -1121,12 +1080,11 @@ width: 400px;
 }
 
 .btn-confirm:hover {
-  background: #EAB800; /* درجة أغمق عند hover */
+  background: #EAB800;
 }
 
 
 
-/* --- Payment Popup --- */
 /* --- Payment Popup --- */
 .payment-popup {
   width: 460px;
@@ -1152,9 +1110,9 @@ width: 400px;
 .upload-box label {
   cursor: pointer;
   display: flex;
-  justify-content: flex-end;        /* اتجاه النص والأيقونة يمين */
+  justify-content: flex-end; 
   align-items: center;
-  gap: 6px;                         /* مسافة صغيرة بين النص والأيقونة */
+  gap: 6px;
   text-align: right;
 }
 
@@ -1325,7 +1283,7 @@ width: 400px;
     border-radius: 10px;
     border: none;
     outline: none;
-    background: var(--black-50); /* تم التوحيد */
+    background: var(--black-50);
     color: var(--black-900);
     font-size: 14px;
     font-family: 'Cairo', sans-serif;
@@ -1390,10 +1348,7 @@ width: 400px;
     background: var(--primary-600);
 }
 
-
-/* ================================================= */
 /* 7. FOOTER & COPYRIGHT                             */
-/* ================================================= */
 
 .footer {
     background-color: var(--primary-100); /* تم توحيد الخلفية */
@@ -1454,9 +1409,9 @@ width: 400px;
 .footer .social {
   display: flex;
   align-items: center;
-  justify-content: flex-start;   /* 🔹 يجعل الأيقونات بمحاذاة اليمين */
-  gap: 4px;                    /* نلغي المسافة بين الأيقونات */
-  margin-top: 2p;             /* نرفعهم للأعلى */
+  justify-content: flex-start;
+  gap: 4px;          
+  margin-top: 2p; 
   font-size: 0;
 }
 
@@ -1465,7 +1420,7 @@ width: 400px;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  margin: 0 3px;             /* تحكم دقيق بالمسافة بين الأيقونات */
+  margin: 0 3px;   
 }
 
 .footer .social img {
@@ -1479,26 +1434,21 @@ width: 400px;
   transform: scale(1.1);
 }
 
-
-
-/* 4. تعديل المسافة تحت العنوان */
 .footer-col h4 {
-    margin-bottom: 5px; /* تقليل المسافة تحت العنوان */
+    margin-bottom: 5px;
 }
 
 
 .copyright {
     text-align: center;
-    background: var(--primary-900); /* تم توحيد اللون */
+    background: var(--primary-900); 
     color: #fff;
     padding: 10px;
     font-size: 13px;
 }
 
 
-/* ================================================= */
 /* 8. MEDIA QUERIES (RESPONSIVENESS)                 */
-/* ================================================= */
 
 /* --- General Adjustments --- */
 @media (max-width: 1200px) {
