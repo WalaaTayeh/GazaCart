@@ -84,24 +84,43 @@ router.post("/signin", async (req, res) => {
 // ===== Signup التاجر =====
 router.post("/merchant/signup", async (req, res) => {
   try {
-    const { fullname, email, password } = req.body;
-    if (!fullname || !email || !password)
-      return res.status(400).json({ message: "الرجاء إدخال الاسم والبريد وكلمة المرور" });
+    const { fullname, phone, email, password } = req.body;
+    console.log("📥 Reached /merchant/signup route");
+    console.log("📦 Received data:", req.body);
 
-    const exists = await User.findOne({ email });
+    if (!fullname || !phone || !email || !password) {
+      return res.status(400).json({ message: "الرجاء إدخال الاسم، الهاتف، البريد وكلمة المرور" });
+    }
+
+    const exists = await User.findOne({ $or: [{ email }, { phone }] });
     if (exists) return res.status(400).json({ message: "المستخدم موجود بالفعل" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ fullname, email, password: hashedPassword, role: "merchant" });
+    const newUser = new User({
+      fullname,
+      phone,
+      email,
+      password: hashedPassword,
+      role: "merchant",
+    });
+
     await newUser.save();
 
-    res.status(201).json({ message: "تم إنشاء حساب التاجر بنجاح ✅" });
+    console.log("✅ Merchant created successfully:", newUser);
+    res.status(201).json({ message: "تم تسجيل التاجر بنجاح!" });
+
   } catch (error) {
-    console.error("Merchant Signup error:", error);
-    res.status(500).json({ message: "خطأ في السيرفر" });
+    console.error("❌ Merchant Signup error:", error);
+    res.status(500).json({
+      message: "خطأ في السيرفر",
+      error: error.message,
+      stack: error.stack
+    });
   }
 });
+
+
 
 // ===== Signin التاجر =====
 router.post("/merchant/signin", async (req, res) => {

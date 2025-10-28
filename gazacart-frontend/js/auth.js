@@ -98,3 +98,61 @@ const res = await fetch("https://gazacart.onrender.com/api/auth/signin", {
     console.error(err);
   }
 });
+// دالة عرض البوب
+function showMerchantPopup(message, type, onClose) {
+  const popup = document.getElementById('merchant-popup');
+  const popupTitle = popup.querySelector('.popup-title');
+  const popupMessage = popup.querySelector('.popup-message');
+  const popupIcon = popup.querySelector('.popup-icon');
+
+  popupTitle.textContent = type === "success" ?"سيتم التواصل معك قريبًا لاكمال إعداد متجرك " : "حدث خطأ!";
+  popupIcon.textContent = type === "success" ? "✅" : "❌";
+ popupMessage.innerHTML = message;
+
+
+  popup.style.display = 'flex';
+
+  const closeBtn = document.getElementById('close-popup');
+  closeBtn.replaceWith(closeBtn.cloneNode(true));
+  const newCloseBtn = document.getElementById('close-popup');
+
+  newCloseBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
+    if (onClose) onClose();
+  });
+}
+
+// تسجيل دخول التاجر 
+const form = document.querySelector(".merchant-login form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const fullname = document.getElementById("merchantName").value.trim();
+  const phone = document.getElementById("merchantPhone").value.trim();
+  const email = document.getElementById("merchantEmail").value.trim();
+  const password = document.getElementById("merchantPassword").value;
+
+  if (!fullname || !phone || !email || !password) return showMerchantPopup("الرجاء تعبئة جميع الحقول", "error");
+
+  try {
+    const response = await fetch("https://gazacart.onrender.com/api/auth/merchant/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fullname, phone, email, password , role: 'merchant'}),
+    });
+
+    const data = await response.json();
+
+ if (response.ok) {
+  const fullMessage = `${data.message}`;
+  showMerchantPopup(fullMessage, "success");
+  form.reset();
+} else {
+  showMerchantPopup(data.message, "error");
+}
+
+  } catch (err) {
+    console.error("Signup error:", err);
+    showMerchantPopup("حدث خطأ ما. حاول لاحقًا.", "error");
+  }
+});

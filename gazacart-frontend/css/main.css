@@ -395,7 +395,190 @@ body {
     color: var(--primary-500);
 }
 
+/* =============================== */
+  /* Merchant Registration Section    */
+  /* =============================== */
+  .merchant-section {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: white;
+    padding: 80px 0;
+  }
 
+  .merchant-section .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  /* --- النص التسويقي --- */
+  .merchant-section .merchant-text {
+    flex: 1;
+    min-width: 320px;
+  }
+
+  .merchant-section .merchant-text h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+
+  .merchant-section .merchant-text p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    opacity: 0.9;
+    color: var(--white);
+  }
+
+  /* --- فورم تسجيل التاجر --- */
+  .merchant-section .merchant-login {
+    flex: 1;
+    min-width: 320px;
+    background: var(--white);
+    color: var(--black-950);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .merchant-section .merchant-login h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--primary-500);
+  }
+
+  .merchant-section .merchant-login label {
+    font-weight: bold;
+  }
+
+  .merchant-section .merchant-login input {
+    padding: 12px;
+    border: 1px solid var(--black-200);
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: right;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .merchant-section .merchant-login input:focus {
+    box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.3);
+    border-color: var(--primary-500);
+  }
+
+  .merchant-section .merchant-login button {
+    background: var(--primary-500);
+    color: var(--black-950);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+      margin-top: 25px;
+  }
+
+  .merchant-section .merchant-login button:hover {
+    background: var(--primary-600);
+  }
+
+  .merchant-section .merchant-login p {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.95rem;
+  }
+
+  .merchant-section .merchant-login p a {
+    color: var(--primary-500);
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 992px) {
+    .merchant-section .container {
+      flex-direction: column;
+      gap: 40px;
+    }
+    .merchant-section .merchant-login {
+      width: 100%;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+    .merchant-section .merchant-text {
+      text-align: center;
+    }
+  }
+  /* === Merchant Popup Styles === */
+.merchant-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none; /* سيظهر بالـ JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.popup-box {
+  background: #fff;
+  color: #1e293b;
+  border-radius: 20px;
+  padding: 30px 25px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: popupFade 0.5s ease;
+}
+
+.popup-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #0ea5e9;
+}
+
+.popup-box h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.popup-box p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.popup-box button {
+  background: #f5b800;
+  color: #1a1300;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.popup-box button:hover {
+  background: #cc9900;
+}
+
+@keyframes popupFade {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 /* 4. STORE PAGE SECTIONS (Banner, Profile, Products)*/
 .banner {
     width: 85%;
@@ -1557,4 +1740,126 @@ width: 400px;
     .hero-text h1 { font-size: 26px; }
     .hero-text p  { font-size: 15px; }
     .hero-text .btn.yellow { padding: 12px 28px; }
+
+  }
+  /* ========== Search Section ========== */
+.search {
+  background-color: #fffaf0; /* نفس خلفية الموقع */
+  padding: 30px 0;
+}
+
+.search .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  max-width: 700px;
+}
+
+/* ✅ حاوية البحث لتحديد موضع النتائج */
+.search-box {
+  position: relative; /* عشان تكون النتائج تحت مربع البحث بالضبط */
+  flex: 1;
+}
+
+.search input {
+  width: 95%;
+  padding: 14px 18px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  text-align: right;
+}
+
+.search input:focus {
+  border-color: #f4b000;
+  box-shadow: 0 0 4px rgba(244, 176, 0, 0.4);
+}
+
+/* زر أصفر عام */
+.btn.yellow {
+  background-color: #f4b000;
+  color: #000; /* النص أسود */
+  border: none;
+  padding: 18px 0; /* زيادة الطول */
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 180px; /* يخلي الزر طويل مثل التصميم */
+  text-align: center;
+}
+
+.btn.yellow:hover {
+  background-color: #d99900;
+}
+
+/* ===== نتائج البحث ===== */
+.search-results {
+  position: absolute;
+  top: 100%; /* مباشرة تحت مربع البحث */
+  left: 0;
+  width: 100%; /* يأخذ عرض الحاوي */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none;
+  text-align: right;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 5px; /* مسافة بسيطة تحت الـ input */
+  transition: all 0.2s ease-in-out; /* لتأثير سلس عند الظهور */
+}
+
+/* لما تظهر النتائج (أضف كلاس show عند الحاجة) */
+.search-results.show {
+  display: block;
+}
+
+/* عناصر النتائج */
+.search-results div {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.search-results div:hover {
+  background: #fff3cd; /* لون خلفية عند hover */
+  transform: translateX(3px); /* حركة بسيطة لطيفة */
+}
+
+/* النص الصغير (الفئة مثل clothes أو sweets) */
+.search-results small {
+  color: #777;
+  font-size: 13px;
+}
+
+/* عنوان أقسام المتاجر / المنتجات */
+.search-header {
+  font-weight: bold;
+  font-size: 16px;
+  color: #444;
+  padding: 8px 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 600px) {
+  .search .container {
+    flex-direction: column;
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .search input,
+  .search .btn.yellow {
+    width: 100%;
+  }
 }
