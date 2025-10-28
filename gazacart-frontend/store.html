@@ -315,7 +315,7 @@
     </div>
   </footer>
 
-  <div class="copyright">© 2025 جميع الحقوق محفوظة</div>
+  <div class="copyright">© 2025 GAZACart الحقوق محفوظة</div>
 
   <script>
   // ===== فتح وإغلاق البوب أب =====
@@ -364,7 +364,7 @@ submitEditBtn?.addEventListener("click", async () => {
 
   try {
     const res = await fetch(
-      `http://localhost:5000/api/products/${currentEditingProduct._id}`,
+      `https://gazacart.onrender.com/api/products/${currentEditingProduct._id}`,
       {
         method: "PUT",
         headers: {
@@ -406,7 +406,7 @@ function openEditPopup(prod) {
       const card = document.createElement("div");
       card.className = "card";
       const imageUrl = prod.images?.[0]
-        ? `http://localhost:5000${prod.images[0]}`
+        ? `https://gazacart.onrender.com${prod.images[0]}`
         : "images/Component 1.png";
       const prodRating = prod.rating || 0;
 
@@ -427,7 +427,7 @@ function openEditPopup(prod) {
       card.querySelector(".btn-delete").addEventListener("click", async () => {
         if (!confirm("هل أنت متأكد من حذف هذا المنتج؟")) return;
         try {
-          const res = await fetch(`http://localhost:5000/api/products/${prod._id}`, {
+          const res = await fetch(`https://gazacart.onrender.com/api/products/${prod._id}`, {
             method: "DELETE",
             headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
           });
@@ -475,7 +475,7 @@ function setupAddPopup(storeId) {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/products", {
+      const res = await fetch("https://gazacart.onrender.com/api/products", {
         method: "POST",
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -532,7 +532,7 @@ function setupAddPopup(storeId) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
-        const res = await fetch("http://localhost:5000/api/auth/merchant/signin", {
+        const res = await fetch("https://gazacart.onrender.com/api/auth/merchant/signin", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -572,7 +572,7 @@ async function initStoreAdmin() {
 
   try {
     // جلب بيانات المتجر الخاص بالتاجر
-    const res = await fetch("http://localhost:5000/api/stores/my/store", {
+    const res = await fetch("https://gazacart.onrender.com/api/stores/my/store", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error("فشل في جلب بيانات المتجر");
@@ -586,7 +586,7 @@ async function initStoreAdmin() {
     storeNameEl.textContent = store.name || "اسم المتجر غير متوفر";
     storeDescEl.textContent = store.description || "لا يوجد وصف متاح.";
     storeImgEl.src = store.images?.[0]
-      ? `http://localhost:5000${store.images[0]}`
+      ? `https://gazacart.onrender.com${store.images[0]}`
       : "images/profile.jpg";
     starsEl.textContent =
       "★".repeat(store.rating || 0) + "☆".repeat(5 - (store.rating || 0));
@@ -612,7 +612,7 @@ newEditBtn.addEventListener("click", async () => {
   console.log("🔹 storeId:", storeId, "🔹 token موجود");
 
   try {
-    const res = await fetch(`http://127.0.0.1:5000/api/stores/${storeId}`, {
+    const res = await fetch(`https://gazacart.onrender.com/api/stores/${storeId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
