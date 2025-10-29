@@ -1789,3 +1789,127 @@ width: 400px;
         width: 100%;
     }
   }
+  
+
+
+  /* ========== Search Section ========== */
+.search {
+  background-color: #fffaf0; /* نفس خلفية الموقع */
+  padding: 30px 0;
+}
+
+.search .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  max-width: 700px;
+}
+
+/* ✅ حاوية البحث لتحديد موضع النتائج */
+.search-box {
+  position: relative; /* عشان تكون النتائج تحت مربع البحث بالضبط */
+  flex: 1;
+}
+
+.search input {
+  width: 95%;
+  padding: 14px 18px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  text-align: right;
+}
+
+.search input:focus {
+  border-color: #f4b000;
+  box-shadow: 0 0 4px rgba(244, 176, 0, 0.4);
+}
+
+/* زر أصفر عام */
+.btn.yellow {
+  background-color: #f4b000;
+  color: #000; /* النص أسود */
+  border: none;
+  padding: 18px 0; /* زيادة الطول */
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 180px; /* يخلي الزر طويل مثل التصميم */
+  text-align: center;
+}
+
+.btn.yellow:hover {
+  background-color: #d99900;
+}
+
+/* ===== نتائج البحث ===== */
+.search-results {
+  position: absolute;
+  top: 100%; /* مباشرة تحت مربع البحث */
+  left: 0;
+  width: 100%; /* يأخذ عرض الحاوي */
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: none;
+  text-align: right;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 5px; /* مسافة بسيطة تحت الـ input */
+  transition: all 0.2s ease-in-out; /* لتأثير سلس عند الظهور */
+}
+
+/* لما تظهر النتائج (أضف كلاس show عند الحاجة) */
+.search-results.show {
+  display: block;
+}
+
+/* عناصر النتائج */
+.search-results div {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.search-results div:hover {
+  background: #fff3cd; /* لون خلفية عند hover */
+  transform: translateX(3px); /* حركة بسيطة لطيفة */
+}
+
+/* النص الصغير (الفئة مثل clothes أو sweets) */
+.search-results small {
+  color: #777;
+  font-size: 13px;
+}
+
+/* عنوان أقسام المتاجر / المنتجات */
+.search-header {
+  font-weight: bold;
+  font-size: 16px;
+  color: #444;
+  padding: 8px 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #f9f9f9;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 600px) {
+  .search .container {
+    flex-direction: column;
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .search input,
+  .search .btn.yellow {
+    width: 100%;
+  }
+}
