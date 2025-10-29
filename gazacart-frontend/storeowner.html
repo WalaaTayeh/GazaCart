@@ -519,43 +519,56 @@ function setupAddPopup(storeId) {
     }
   });
 
-  // ===== تسجيل الدخول =====
-  document.addEventListener("DOMContentLoaded", () => {
-    const loginPopup = document.getElementById("loginPopup");
-    const loginForm = document.getElementById("loginForm");
-    const loginEmail = document.getElementById("loginEmail");
-    const loginPassword = document.getElementById("loginPassword");
-    const loginError = document.getElementById("loginError");
+// ===== تسجيل الدخول =====
+document.addEventListener("DOMContentLoaded", () => {
+  const loginPopup = document.getElementById("loginPopup");
+  const loginForm = document.getElementById("loginForm");
+  const loginEmail = document.getElementById("loginEmail");
+  const loginPassword = document.getElementById("loginPassword");
+  const loginError = document.getElementById("loginError");
 
+  const token = localStorage.getItem("token");
+
+  if (token) {
+ 
+    document.body.classList.remove("login-active");
+    loginPopup.classList.remove("active");
+    initStoreAdmin();
+  } else {
+   
     document.body.classList.add("login-active");
+    loginPopup.classList.add("active");
+  }
 
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      try {
-        const res = await fetch("https://gazacart.onrender.com/api/auth/merchant/signin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: loginEmail.value.trim(),
-            password: loginPassword.value.trim(),
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "خطأ أثناء تسجيل الدخول");
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("https://gazacart.onrender.com/api/auth/merchant/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: loginEmail.value.trim(),
+          password: loginPassword.value.trim(),
+        }),
+      });
 
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("merchantId", data.user._id);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "خطأ أثناء تسجيل الدخول");
 
-        loginPopup.classList.remove("active");
-        document.body.classList.remove("login-active");
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("merchantId", data.user._id);
 
-        initStoreAdmin();
-      } catch (err) {
-        loginError.textContent = err.message;
-        loginError.style.display = "block";
-      }
-    });
+      loginPopup.classList.remove("active");
+      document.body.classList.remove("login-active");
+
+      initStoreAdmin();
+    } catch (err) {
+      loginError.textContent = err.message;
+      loginError.style.display = "block";
+    }
   });
+});
+
 
   // ===== تهيئة لوحة التاجر =====
 async function initStoreAdmin() {
