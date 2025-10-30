@@ -166,7 +166,7 @@ body {
     }
 
      .nav.open {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
     }
   
