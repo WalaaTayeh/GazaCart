@@ -135,6 +135,7 @@ body {
         order: 1;
         margin-right: 0;
         margin-left: auto;
+        z-index: 1001;
     }
 
     .header .container {
