@@ -1,0 +1,1947 @@
+
+
+/* ========== ROOT COLORS ========== */
+:root {
+  /* Primary Palette */
+--primary-50: #FFF9E5;
+--primary-100: #FFF2CC;
+--primary-200: #FFE699;
+--primary-300: #FFD966;
+--primary-400: #CC9900;
+--primary-500: #F5B800;
+--primary-600: #CC9900;
+--primary-700: #997300;
+--primary-800: #664D00;
+--primary-900: #332600;
+--primary-950: #1A1300;
+--primary-bg: #FDFBF7;
+
+  /* Neutral / Black Palette */
+--black-50: #F2F2F2;
+--black-100: #E6E6E6;
+--black-200: #CCCCCC;
+--black-300: #B3B3B3;
+--black-400: #999999;
+--black-500: #222222;
+--black-600: #666666;
+--black-700: #4D4D4D;
+--black-800: #333333;
+--black-900: #1A1A1A;
+--black-950: #0D0D0D;
+
+  /* Status Colors */
+--error-bg: #FEE2E2;
+--white: #FFFFFF;
+}
+
+/* --- Base Body & Utilities --- */
+body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-bg);
+    direction: rtl;
+}
+
+/* الحاوية العامة */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* زر أصفر موحد - يستخدم في الهيرو والـ Modal والـ Search */
+.btn.yellow {
+    background-color: var(--primary-500);
+    color: var(--black-950);
+    border: none;
+    padding: 18px 80px; 
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    text-align: center;
+    width: auto; 
+}
+.btn.yellow:hover {
+    background-color: var(--primary-600);
+}
+
+
+/* 2. HEADER & NAVIGATION COMPONENTS                 */
+.header {
+    background: var(--primary-bg);
+    border-bottom: 1px solid var(--black-100);
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    z-index: 1000;
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    direction: rtl;
+}
+
+/* ===== Logo & Navigation - Shared Styles ===== */
+/* 2. HEADER & NAVIGATION COMPONENTS */
+.header {
+    background: var(--primary-bg);
+    border-bottom: 1px solid var(--black-100);
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    z-index: 1000;
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    direction: rtl;
+}
+
+/* ===== Logo & Navigation - Shared Styles ===== */
+.logo-link {
+    display: flex;
+    align-items: center;
+    /* إلغاء margin-left: 40px لمنع التضارب في الجوال */
+    margin-left: 0;
+}
+
+.logo {
+    height: 40px;
+}
+
+/* القائمة الرئيسية: تستخدم margin-right: auto لدفع السلة وزر القائمة لليسار في الشاشات الكبيرة */
+.nav {
+    margin-right: auto;
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--black-800);
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    margin: 0 15px;
+    display: inline-block;
+}
+.nav a:hover {
+    color: var(--primary-500);
+}
+
+/* زر القائمة: مخفي في الشاشات الكبيرة */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    /* إلغاء margin-right: auto لمنع التضارب في الجوال */
+}
+
+.nav-toggle .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--black-800);
+    margin: 5px 0;
+    transition: 0.4s;
+}
+
+/* زر السلة: */
+.cart {
+    /* مسافة بسيطة بين السلة و زر القائمة في الشاشات الكبيرة */
+    margin-left: 15px;
+}
+
+
+.header-left-group {
+    display: none;
+    align-items: center;
+    gap: 10px; /* مسافة بين السلة والزر */
+}
+
+
+/* 2. تنسيقات واجهة العميل (Client-Page Specific)    */
+/* (index.html, product.html, home.html)            */
+
+
+.client-page .nav {
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    justify-content: flex-start;
+}
+
+.client-page .cart {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.client-page .cart img {
+    height: 32px;
+}
+
+.client-page .cart span {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    background: var(--primary-500);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+
+.client-page .dropdown-container {
+    display: none;
+}
+
+
+/* 3. تنسيقات واجهة المتجر */
+
+
+.store-admin-page .cart {
+    display: none; 
+}
+
+.store-admin-page .nav {
+    display: flex;
+    gap: 24px;
+    margin: 0 0 0 40px; 
+    justify-content: flex-start;
+}
+
+/* ===== Dropdown - Store Admin Display ===== */
+.store-admin-page .dropdown-container {
+    position: relative;
+    display: inline-block;
+    direction: rtl;
+    margin-right: auto;
+}
+
+.dropdown {
+    background: var(--primary-100);
+    border: none;
+    border-radius: 16px;
+    padding: 15px 25px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--black-900);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 150px;
+    transition: background 0.3s;
+}
+
+.dropdown:hover {
+    background: var(--primary-200);
+}
+
+.dropdown img {
+    width: 14px;
+    transition: transform 0.3s;
+}
+
+.dropdown.open img {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 55px;
+    padding: 0;
+    z-index: 1000;
+}
+
+.logout-btn {
+    background: var(--error-bg);
+    border: none;
+    color: #c53030;
+    font-weight: 700;
+    padding: 12px 25px;
+    border-radius: 16px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    min-width: 150px;
+    transition: 0.3s;
+    margin-top: 5px;
+}
+
+.logout-btn:hover {
+    background: #ffcfcf;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+
+/* 3. HOME PAGE SECTIONS (Hero, Search, Store Track) */
+
+/* --- Hero Section --- */
+.hero {
+    background-color: var(--primary-bg);
+    padding: 70px 0;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    flex-direction: row-reverse;
+    padding-top: 100px;
+}
+
+.hero-img {
+    flex: 0 0 520px;
+    max-width: 520px;
+}
+.hero-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-text {
+    flex: 1;
+    text-align: right;
+}
+
+.hero-text h1 {
+    margin: 0 0 14px;
+    font-weight: 800;
+    line-height: 1.5;
+    color: var(--black-900);
+    font-size: clamp(28px, 3.8vw, 48px);
+}
+
+.hero-text p {
+    margin: 0 0 28px;
+    color: var(--black-600);
+    font-size: clamp(15px, 1.2vw, 19px);
+}
+
+.search {
+    background-color: var(--primary-bg);
+    padding: 30px 0;
+}
+
+.search .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    max-width: 700px;
+}
+
+.search input {
+    flex: 1;
+    padding: 14px 18px;
+    font-size: 16px;
+    border: 1px solid var(--black-200);
+    border-radius: 8px;
+    outline: none;
+    text-align: right;
+}
+
+.search input:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 4px rgba(245, 183, 0, 0.4);
+}
+
+.search .btn.yellow {
+    width: 180px; 
+    padding: 18px 0;
+    font-size: 18px;
+}
+
+.store-section {
+    padding: 40px 0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 15px;
+}
+
+.section-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.section-header a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black-800);
+    text-decoration: none;
+}
+.section-header a:hover { color: var(--primary-500); }
+
+/* المسار (سلايدر أفقي) */
+.store-track {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+}
+.store-track::-webkit-scrollbar { height: 0; }
+
+/* الكارت */
+.store-card {
+    position: relative;
+    flex: 0 0 auto;
+    width: 300px;
+    max-width: none;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: transform 0.3s;
+}
+.store-card:hover { transform: translateY(-3px); }
+
+.store-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+}
+
+.store-card .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));
+    text-align: right;
+}
+
+.store-card .overlay p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.store-card .overlay span {
+    font-size: 18px;
+    color: var(--primary-500);
+}
+
+/* =============================== */
+  /* Merchant Registration Section    */
+  /* =============================== */
+  .merchant-section {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: white;
+    padding: 80px 0;
+  }
+
+  .merchant-section .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  /* --- النص التسويقي --- */
+  .merchant-section .merchant-text {
+    flex: 1;
+    min-width: 320px;
+  }
+
+  .merchant-section .merchant-text h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+
+  .merchant-section .merchant-text p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    opacity: 0.9;
+    color: var(--white);
+  }
+
+  /* --- فورم تسجيل التاجر --- */
+  .merchant-section .merchant-login {
+    flex: 1;
+    min-width: 320px;
+    background: var(--white);
+    color: var(--black-950);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .merchant-section .merchant-login h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--primary-500);
+  }
+
+  .merchant-section .merchant-login label {
+    font-weight: bold;
+  }
+
+  .merchant-section .merchant-login input {
+    padding: 12px;
+    border: 1px solid var(--black-200);
+    border-radius: 10px;
+    font-size: 1rem;
+    text-align: right;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .merchant-section .merchant-login input:focus {
+    box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.3);
+    border-color: var(--primary-500);
+  }
+
+  .merchant-section .merchant-login button {
+    background: var(--primary-500);
+    color: var(--black-950);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+      margin-top: 25px;
+  }
+
+  .merchant-section .merchant-login button:hover {
+    background: var(--primary-600);
+  }
+
+  .merchant-section .merchant-login p {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.95rem;
+  }
+
+  .merchant-section .merchant-login p a {
+    color: var(--primary-500);
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  /* --- Responsive --- */
+  @media (max-width: 992px) {
+    .merchant-section .container {
+      flex-direction: column;
+      gap: 40px;
+    }
+    .merchant-section .merchant-login {
+      width: 100%;
+      max-width: 420px;
+      margin-inline: auto;
+    }
+    .merchant-section .merchant-text {
+      text-align: center;
+    }
+  }
+  /* === Merchant Popup Styles === */
+.merchant-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none; /* سيظهر بالـ JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.merchant-popup-box {
+  background: #fff;
+  color: #1e293b;
+  border-radius: 20px;
+  padding: 30px 25px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: popupFade 0.5s ease;
+}
+
+.popup-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #0ea5e9;
+}
+
+.merchant-popup-box h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.merchant-popup-box p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.merchant-popup-box button {
+  background: #f5b800;
+  color: #1a1300;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 25px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.merchant-popup-box button:hover {
+  background: #cc9900;
+}
+
+@keyframes popupFade {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* 4. STORE PAGE SECTIONS (Banner, Profile, Products)*/
+.banner {
+    width: 85%;
+    height: 400px;
+    background-color: #ccc;
+    margin: 82px auto 20px auto; 
+    border-radius: 12p;
+    position: relative;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: -100px 35px 20px 0;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: var(--black-200);
+    border: 4px solid var(--white);
+}
+
+.profile-info {
+    margin-left: 10px;
+    z-index: 10;
+    margin-right: 70px;
+}
+
+.profile-info h2 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.stars {
+    font-size: 18px;
+    color: var(--primary-500);
+    letter-spacing: 2px;
+}
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* --- About Section --- */
+.about {
+    width: 85%;
+    margin: 0 auto;
+}
+
+.about button {
+    background: var(--primary-100);
+    width: 125px;
+    height: 35px;
+    border: none;
+    border-radius: 16px;
+    color: var(--black-900);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.about img {
+    width: 20px;
+    height: 20px;
+}
+
+/* --- Add Product Button (Store Page) --- */
+.add-products {
+    width: 85%;
+    margin: 40px auto 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-product {
+    background: var(--primary-500);
+    color: var(--black-900);
+    padding: 20px 80px;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- Products Grid --- */
+.related {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: var(--white);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--black-100);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: right;
+}
+
+.card-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--black-50);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-header h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--black-900);
+}
+.card .stars {
+    font-size: 20px;
+    color: var(--black-600);
+    white-space: nowrap;
+}
+
+.price {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--black-900);
+    text-align: right;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.actions .btn-edit,
+.actions .btn-delete {
+    width: 39px;
+    height: 39px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.actions .btn-edit img,
+.actions .btn-delete img {
+    width: 39px;
+    height: 39px;
+    object-fit: contain;
+}
+
+.btn-add-product {
+    background: var(--primary-500);
+    color: var(--black-900);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-add-product:hover {
+    background: var(--primary-600);
+}
+
+/* 5. PRODUCT PAGE SECTIONS                          */
+
+.product {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    padding: 40px;
+    padding-top: 80px;
+    flex-wrap: wrap;
+}
+
+.product-image {
+    width: 400px;
+    height: 350px;
+    background: var(--black-300);
+    border-radius: 10px;
+    flex-shrink: 0;
+
+}
+
+.product-details h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--black-900);
+}
+
+.stars {
+    color: var(--black-600);
+    margin: 5px 0;
+}
+
+.product-details p {
+    margin: 15px 0;
+    line-height: 1.6;
+    color: var(--black-800);
+}
+
+.add-product {
+    background: var(--primary-500);
+    color: var(--black-900);
+    padding: 15px 60px;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.add-product:hover {
+background: var(--primary-600);
+}
+.product-image img,
+.product-image .product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+
+.products-grid .card {
+  text-decoration: none; 
+  display: block;
+}
+
+
+/* 6. MODALS & POPUPS (Auth, Cart, Checkout, Done)   */
+
+/* --- Modal Base (Used for Auth & Popups) --- */
+.modal{
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #FFF;
+    width: 80%;
+    max-width: 950px;
+    border-radius: 12px;
+    padding: 20px 30px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.close  {
+    position: absolute;
+    top: 12px; left: 16px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--black-800);
+}
+/* --- Auth Modal (Sign In/Up) --- */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: var(--black-50);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab-btn.active {
+  background: var(--primary-500);
+  color: var(--black-950);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 40px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-img img {
+  width: 100%;
+  max-width: 350px;
+}
+
+.modal-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.tab-content p {
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--black-900);
+}
+
+/* ===== Labels ===== */
+.modal-form label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--black-900);
+  margin-bottom: 2px;
+  display: block;
+}
+
+/* ===== Inputs ===== */
+.modal-form input {
+  width: 455px;
+  height: 50px;
+  border: none;
+  border-radius: 16px;
+  background: #F2F2F2; /* اللون الرمادي الفاتح */
+  font-size: 15px;
+  color: #5C5C5C;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+.modal-form input::placeholder {
+  color: #A1A1A1;
+  font-weight: 400;
+}
+
+/* ===== Phone Input ===== */
+.modal-form .phone-input {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse; 
+  background: #F2F2F2;
+  border-radius: 16px;
+  border: none;
+  padding: 0 14px;
+  height: 50px;
+  width: 425px;
+  margin-bottom: 15px;
+}
+
+.modal-form .phone-input img {
+  width: 24px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+/* input داخل phone-input */
+.modal-form .phone-input input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #5C5C5C;
+  align-items: center;
+  font-size: 15px;
+  outline: none;
+  text-align: right;
+  direction: ltr;
+  height: 100%; 
+  padding-top: 25px;
+}
+
+/* ===== Buttons ===== */
+.modal-form .btn.yellow {
+  background: #F4C400; 
+  color: var(--black-950);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.modal-form .btn.yellow:hover {
+  background: #EAB800;
+}
+
+/* --- Cart Modal --- */
+.cart-popup {
+    width: 90%;
+    max-width: 700px;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+}
+
+.cart-arrow {
+    position: absolute;
+    top: -12px;
+    left: 25px;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 15px solid var(--white);
+}
+
+.cart-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--white);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--black-100);
+}
+
+.cart-item img {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-info {
+    flex: 1;
+    margin: 0 15px;
+    text-align: right;
+}
+
+.item-info h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.item-info p {
+    margin: 2px 0;
+    font-size: 14px;
+    color: var(--black-800);
+}
+
+.delete-btn {
+      width: 40px;          
+  height: 40px;
+ background: var(--error-bg);
+  border: none;
+   border-radius: 8px;
+    cursor: pointer;
+     padding: 6px;
+      margin-left: 10px;
+     }
+
+.delete-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.cart-summary {
+    text-align: right;
+    font-size: 16px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.summary-row.total span {
+    font-weight: 700;
+}
+
+.cart-summary .btn.yellow {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* --- Checkout Popup --- */
+.checkout-popup {
+  width: 500px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 24px 20px;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  font-family: "Cairo", sans-serif;
+  text-align: right;
+}
+
+/* ===== Body & Form Layout ===== */
+.checkout-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.checkout-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== Labels ===== */
+.checkout-body label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--black-900);
+  margin-bottom: 2px;
+}
+
+/* ===== Inputs ===== */
+.checkout-body input {
+width: 100%;
+height: 50px;
+width: 425px;
+padding: 10px 14px;
+border: none;
+border-radius: 16px; 
+background: #F2F2F2; 
+font-size: 15px;
+color: #5C5C5C;
+box-sizing: border-box;
+outline: none;
+}
+
+/* Placeholder */
+.checkout-body input::placeholder {
+  color: #A1A1A1;
+  font-weight: 400;
+}
+
+/* ===== Phone Input ===== */
+.checkout-body .phone-input {
+display: flex;
+align-items: center;
+flex-direction: row-reverse;
+background: #F2F2F2;
+border-radius: 16px;
+border: none;
+padding: 0 14px;
+height:50px;
+width: 400px;
+}
+
+.phone-input img {
+  width: 24px;
+  height: 16px;
+  border-radius: 3px;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+/* input داخل phone-input */
+.phone-input input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #5C5C5C;
+  font-size: 15px;
+  outline: none;
+  text-align: right; 
+  direction: rtl;
+}
+
+/* ===== Confirm Button ===== */
+.btn-confirm {
+  width: 100%;
+  background: #F4C400;
+  color: var(--black-950);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-confirm:hover {
+  background: #EAB800;
+}
+
+
+
+/* --- Payment Popup --- */
+.payment-popup {
+  width: 460px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 20px 18px;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Cairo", sans-serif;
+}
+
+.payment-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black-900);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+/* ===== رفع إشعار الدفع ===== */
+
+.upload-box label {
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  gap: 6px;
+  text-align: right;
+}
+
+/* الأيقونة */
+.upload-box img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+    color: var(--black-500);
+
+}
+
+/* ===== أو ===== */
+.or-separator {
+  position: relative;
+  text-align: center;
+  font-size: 14px;
+  color: var(--black-600);
+  margin: 10px 0;
+}
+
+.or-separator::before,
+.or-separator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 38%;
+  height: 1px;
+  background: var(--black-200);
+}
+
+.or-separator::before { right: 0; }
+.or-separator::after { left: 0; }
+
+/* =====  دفع كاش ===== */
+.btn-cash {
+  width: 100%;
+  background: var(--primary-500);
+  color: var(--black-950);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 5px;
+}
+.btn-next {
+  width: 100%;
+  background: var(--primary-500);
+  color: var(--black-950);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 5px;
+}
+.btn-cash:hover {
+  background: var(--primary-600);
+}
+
+.payment-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: auto;
+}
+
+/* --- Done Modal --- */
+.done-popup {
+    width: 460px;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 25px 20px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    font-family: "Cairo", sans-serif;
+}
+
+.done-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black-900);
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.btn-done {
+    width: 100%;
+    background: var(--primary-500);
+    color: var(--black-950);
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-done:hover {
+    background: var(--primary-600);
+}
+
+/* --- Add Product Popup (Store Admin) --- */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.popup-box {
+    background: var(--white);
+    border-radius: 20px;
+    width: 420px;
+    padding: 30px 40px;
+    text-align: right;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    direction: rtl;
+    font-family: 'Cairo', sans-serif;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    color: var(--black-800);
+    cursor: pointer;
+}
+
+.popup-box h2 {
+    margin-bottom: 20px;
+    color: var(--black-900);
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.popup-box label {
+    display: block;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    color: var(--black-700);
+    font-size: 15px;
+}
+
+.popup-box input[type="text"],
+.popup-box input[type="number"],
+.popup-box textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: var(--black-50);
+    color: var(--black-900);
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    box-sizing: border-box;
+    transition: 0.3s ease;
+}
+
+.popup-box input[type="text"]:focus,
+.popup-box textarea:focus {
+    background: var(--black-100);
+}
+
+.popup-box textarea {
+    resize: none;
+    height: 90px;
+}
+
+.popup-box input::placeholder,
+.popup-box textarea::placeholder {
+    font-family: 'Cairo', sans-serif;
+    color: var(--black-600);
+    font-size: 14px;
+}
+
+.upload-box {
+    border-radius: 10px;
+    background: var(--primary-50);
+    padding: 12px 15px;
+    text-align: right;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--black-700);
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.upload-box:hover {
+    background: var(--primary-100);
+}
+
+.upload-box input[type="file"] {
+    display: none;
+}
+
+.submit-btn {
+    background: var(--primary-500);
+    border: none;
+    color: var(--black-900);
+    font-weight: 700;
+    padding: 10px 0;
+    border-radius: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.3s;
+    font-size: 15px;
+}
+
+.submit-btn:hover {
+    background: var(--primary-600);
+}
+
+/* 7. FOOTER & COPYRIGHT                             */
+
+.footer {
+    background-color: var(--primary-100); /* تم توحيد الخلفية */
+    padding: 40px 0 20px;
+    margin-top: 40px;
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+}
+
+.footer .container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+.footer-col p {
+    font-size: 14px;
+    color: var(--black-900);
+    margin: 0 0 15px;
+    line-height: 1.6;
+}
+
+.footer-logo {
+    width: 50px;
+    margin-top: 10px;
+}
+
+.footer-col h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--black-900);
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--black-800);
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.footer-col ul li:hover {
+    color: var(--primary-500);
+}
+
+/* 1. تنسيق حاوية الأيقونات: Flexbox بمسافات مضبوطة */
+
+.footer .social {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;          
+  margin-top: 2p; 
+  font-size: 0;
+}
+
+.footer .social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin: 0 3px;   
+}
+
+.footer .social img {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.footer .social img:hover {
+  transform: scale(1.1);
+}
+
+.footer-col h4 {
+    margin-bottom: 5px;
+}
+
+
+.copyright {
+    text-align: center;
+    background: var(--primary-900); 
+    color: #fff;
+    padding: 10px;
+    font-size: 13px;
+}
+
+
+/* 8. MEDIA QUERIES (RESPONSIVENESS) */
+
+/* --- A. شاشات كبيرة (أقل من 1200 بكسل) --- */
+@media (max-width: 1200px) {
+    /* شبكة المنتجات تتحول إلى 3 أعمدة */
+    .products-grid { 
+        grid-template-columns: repeat(3, 1fr); 
+    }
+    
+    /* توحيد هوامش صفحة التاجر */
+    .about, 
+    .add-products, 
+    .related {
+        width: 95%;
+        padding: 0 15px; 
+        margin-inline: auto;
+    }
+}
+
+
+/* --- B. شاشات متوسطة (تابلت: أقل من 992 بكسل) --- */
+@media (max-width: 992px) {
+    /* ===== Header ===== */
+    .header .container {
+        /* الهيدر على صفحة التاجر يتحول إلى عمودي */
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 24px;
+    }
+    
+    /* ===== Hero Section (الصفحة الرئيسية) ===== */
+    .hero { padding: 50px 0; }
+    .hero .container {
+        flex-direction: column-reverse; /* الصورة تحت النص */
+        gap: 30px;
+        padding-top: 90px;
+    }
+    .hero-text { text-align: center; }
+    .hero-img { max-width: 80%; margin-inline: auto; }
+
+    /* ===== Product Page (صفحة المنتج) ===== */
+    .product {
+        flex-direction: column;
+        align-items: center;
+        padding-top: 90px;
+        padding-bottom: 20px;
+        gap: 30px;
+    }
+    .product-details { text-align: center; max-width: 90%; }
+    .product-image { width: 100%; max-width: 400px; height: 300px; }
+    
+    /* ===== Store Track (سلايدر المتاجر) ===== */
+    .store-card { flex: 0 0 45%; max-width: 45%; } /* عمودين بالعرض */
+
+    /* ===== Auth Modal ===== */
+    .modal-body { flex-direction: column-reverse; gap: 20px; }
+    .modal-img { display: none; }
+    .modal-form input,
+    .modal-form .phone-input { width: 100%; }
+
+    /* ===== Footer ===== */
+    .footer .container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 20px;
+    }
+}
+
+
+/* --- C. شاشات صغيرة (جوال: أقل من 768 بكسل) --- */
+@media (max-width: 768px) {
+    /* ===== General Resets ===== */
+    .container { padding: 0 15px; }
+    .client-page { padding-top: 70px; } 
+    .store-admin-page { padding-top: 70px; }
+    
+    /* ===== Header/Nav ===== */
+    .header .container {
+        justify-content: flex-start !important;
+        display: flex !important;
+        align-items: center;
+        padding: 10px 15px;
+    }
+
+    /* 1. الشعار (Logo) */
+    .logo-link {
+        order: 1 !important;
+        margin: 0 !important; /* مسافة عن الفاصل */
+        align-self: flex-start !important;
+    }
+    .logo {
+        height: 35px;
+    }
+
+    /* 2. القائمة الرئيسية (.nav): تعمل كفاصل (Spacer) */
+    .nav {
+        display: none !important;
+        /* إلغاء أي سلوك Spacer أو Order */
+        flex-grow: 0 !important;
+        order: 99 !important;
+        margin: 0 !important;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 1px solid #777777;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 10px 0;
+        width: 100%;
+        z-index: 999;
+    }
+
+    .header-left-group {
+        display: flex !important;
+        align-items: center; !important;
+        /*margin-left: 0 !important; !* إلغاء هامش auto يمين *!*/
+        margin-right: auto !important; /* يدفع المجموعة إلى اليسار */
+        order: 2 !important;
+        padding-left: 15px; /* لإبعادها عن حافة الشاشة */
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        z-index: 1000;
+    }
+
+
+    /* 4. إظهار زر القائمة وضبط الـ z-index */
+    .nav-toggle {
+        display: block !important;
+        /* نؤكد إلغاء كل الهوامش */
+        margin: 0 !important;
+        /* نؤكد إلغاء كل الحشو */
+        padding: 0 !important;
+        padding-left: 15px !important;
+
+        /* ✅ الأهم: تثبيت محاذاة النص العمودية داخل الزر (يحل مشكلة الـ line-height) */
+        vertical-align: middle !important;
+        line-height: 1 !important;
+        border: none !important; /* إلغاء أي حدود قد تأخذ مساحة */
+        background: none !important; /* إلغاء الخلفية */
+        position: relative;
+        z-index: 1001;
+    }
+
+    .nav-toggle .bar {
+        /* إذا كانت الأشرطة (bars) عناصر span، نضبطها كـ block/inline-block */
+        display: block;
+    }
+    .cart{
+        margin: 0 10px 0 0 !important;
+        vertical-align: middle !important;
+    }
+
+    .cart span {
+        /* إذا كان الرقم 4 داخل span، نضبط ارتفاع السطر */
+        line-height: 1 !important;
+    }
+    .cart img, .logo-link img {
+        /* ✅ الأهم: ضمان أن الصور تلتزم بخط الأساس العمودي */
+        vertical-align: middle !important;
+        display: block; /* يمنع الهوامش السفلية التي تخلفها الصور */
+    }
+
+    /* 5. تخصيص الروابط العمودية */
+    .nav a {
+        display: block;
+        padding: 10px 24px;
+        margin: 0;
+        text-align: right;
+    }
+
+    /* 6. عرض القائمة عند الفتح (إلغاء سلوك الفاصل) */
+    .nav.open {
+        display: flex !important;
+        flex-direction: column;
+        z-index: 999;
+    }
+    /* ===== Store Admin Page (لوحة التاجر) ===== */
+    .store-admin-page .profile {
+        /* ترتيب عكسي وتوسيط */
+        flex-direction: column;
+        align-items: center;
+        margin-top: -60px; 
+        padding: 0 10px;
+    }
+    .store-admin-page .profile-info { 
+        margin-right: 0; 
+        text-align: center;
+    }
+    .profile-img { 
+        width: 100px; 
+        height: 100px;
+        margin-left: 0;
+        margin-bottom: 10px;
+        border-width: 3px;
+    }
+    .profile-info h2 { font-size: 1.5rem; }
+
+    .about, .add-products, .related {
+        padding: 0 10px;
+        width: 100%;
+    }
+    
+    .add-products {
+        flex-direction: column; /* زر الإضافة تحت العنوان */
+        align-items: stretch;
+    }
+    .add-products .add-product {
+        width: 100%;
+        padding: 12px 0;
+        margin-top: 15px;
+    }
+    
+    /* شبكة المنتجات تتحول إلى عمودين */
+    .products-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 15px;
+        padding: 10px 0;
+    }
+
+    /* ===== Footer ===== */
+    .footer .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+    }
+    .footer .social { justify-content: center; }
+
+    /* ===== Cart Popup ===== */
+    .cart-popup { max-width: 90%; }
+    .item-info { margin: 0 10px; }
+}
+
+
+/* --- D. جوالات صغيرة (أقل من 600 بكسل) --- */
+@media (max-width: 600px) {
+    /* ===== Hero & Search ===== */
+    .hero-img { max-width: 100%; }
+    .hero-text .btn.yellow { 
+        padding: 14px 40px; 
+        width: 100%; 
+        font-size: 16px;
+    }
+    
+    /* مربع البحث عمودي بالكامل */
+    .search .container {
+        flex-direction: column;
+        gap: 12px;
+        max-width: 100%;
+    }
+    .search input,
+    .search .btn.yellow {
+        width: 100%;
+    }
+  }
