@@ -24,7 +24,7 @@ const StoreSchema = new Schema({
   images: [String],
   logo: { 
     type: String, 
-    default: "uploads/default-logo.jpg" 
+    default: "uploads/stores/default-logo.jpg" 
   },
   address: String, 
   phone: { 

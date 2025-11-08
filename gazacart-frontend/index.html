@@ -23,14 +23,15 @@
         <img src="images/cart.svg" alt="logo" class="logo">
       </a>
 
-      <nav class="nav">
-        <a href="#">الرئيسية</a>
-        <a href="#best-track">أفضل المتاجر</a>
-        <a href="#clothes-track">متاجر الملابس</a>
-        <a href="#accessories-track">متاجر الاكسسوارات</a>
-        <a href="#sweets-track">متاجر الحلويات</a>
-        <a href="#footer">اتصل بنا</a>
-      </nav>
+   <nav class="nav">
+  <a href="index.html">الرئيسية</a>
+  <a href="category.html?cat=best">أفضل المتاجر</a>
+  <a href="category.html?cat=clothes">متاجر الملابس</a>
+  <a href="category.html?cat=accessories">متاجر الاكسسوارات</a>
+  <a href="category.html?cat=sweets">متاجر الحلويات</a>
+  <a href="#footer">اتصل بنا</a>
+</nav>
+
 
       <div class="header-left-group">
 
@@ -136,9 +137,10 @@
     <div class="container">
       <div class="section-header">
         <h2>أفضل المتاجر</h2>
-        <a href="#" class="view-all" data-target="best-track">← عرض الكل</a>
+       <a href="category.html?cat=best" class="view-all">← عرض الكل</a>
       </div>
       <div class="store-track" id="best-track"></div>
+      
     </div>
   </section>
 
@@ -147,7 +149,8 @@
     <div class="container">
       <div class="section-header">
         <h2>متاجر الملابس</h2>
-        <a href="#" class="view-all" data-target="clothes-track">← عرض الكل</a>
+        <a href="category.html?cat=clothes" class="view-all">← عرض الكل</a>
+
       </div>
       <div class="store-track" id="clothes-track"></div>
     </div>
@@ -158,7 +161,8 @@
     <div class="container">
       <div class="section-header">
         <h2>متاجر الاكسسوارات</h2>
-        <a href="#" class="view-all" data-target="accessories-track">← عرض الكل</a>
+      <a href="category.html?cat=accessories" class="view-all">← عرض الكل</a>
+
       </div>
       <div class="store-track" id="accessories-track"></div>
     </div>
@@ -168,7 +172,8 @@
     <div class="container">
       <div class="section-header">
         <h2>متاجر الحلويات</h2>
-        <a href="#" class="view-all" data-target="sweets-track">← عرض الكل</a>
+        <a href="category.html?cat=sweets" class="view-all">← عرض الكل</a>
+
       </div>
       <div class="store-track" id="sweets-track"></div>
     </div>
@@ -331,36 +336,10 @@
         document.getElementById(btn.dataset.tab).classList.add("active");
       });
     });
-  </script>
-
-  <script>
-    // عرض الكل (تمرير السلايدر)
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll('.view-all').forEach(button => {
-        button.addEventListener('click', function (e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('data-target');
-          const track = document.getElementById(targetId);
-          if (track) {
-            if (track.scrollLeft === 0)
-              track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
-            else
-              track.scrollTo({ left: 0, behavior: 'smooth' });
-          }
-        });
-      });
-    });
-  </script>
-
-  
-
-  <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+ 
 
-  <script>
     <!--فتح زر Humburger-->
-
     document.addEventListener('DOMContentLoaded', function() {
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav');

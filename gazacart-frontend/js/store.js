@@ -19,10 +19,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     storeNameEl.textContent = store.name || "اسم المتجر غير متوفر";
     storeDescEl.textContent = store.description || "لا يوجد وصف متاح.";
-    storeImgEl.src =
-      store.images && store.images.length > 0
-        ? `https://gazacart.onrender.com${store.images[0]}`
-        : "images/profile.jpg";
+  // لتطبيق عرض الصورة في الصفحة الرئيسية أو أي مكان
+const imageUrl =
+  store.images && store.images.length > 0
+    ? `https://gazacart.onrender.com${store.images[0]}`   // أول صورة إذا موجودة
+    : store.logo
+      ? `https://gazacart.onrender.com${store.logo.replace(/\\/g, "/")}` // اللوجو إذا لم توجد صور
+      : "images/profile.jpg"; // صورة افتراضية
+
+storeImgEl.src = imageUrl;
+
 
     const rating = store.rating || 0;
     starsEl.textContent = "★".repeat(rating) + "☆".repeat(5 - rating);

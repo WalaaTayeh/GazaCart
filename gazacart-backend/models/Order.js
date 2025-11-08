@@ -7,7 +7,7 @@ const OrderItemSchema = new Schema({
   name: String,
   price: Number,
   quantity: Number,
-  store: { type: Schema.Types.String , ref: 'Store' }
+  store: { type: Schema.Types.ObjectId , ref: 'Store' }
 });
 
 // الطلب

@@ -128,8 +128,7 @@ exports.getMyStore = async (req, res) => {
 };
 
 // =========================
-// ✏️ تعديل المتجر
-// في controller/store.controller.js
+//  تعديل المتجر
 exports.updateStore = async (req, res) => {
   try {
     const updatedStore = await Store.findByIdAndUpdate(

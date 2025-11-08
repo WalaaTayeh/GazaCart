@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة تحكم التاجر</title>
+  <link id="favicon" rel="icon" type="image/png" href="images/cart.svg">
   <link rel="stylesheet" href="css/main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -171,6 +172,41 @@
   display: block;
 }
 
+.orders-section {
+  margin: 50px auto;
+  width: 90%;
+  text-align: center;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.orders-table th, .orders-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.orders-table th {
+  background: var(--primary-100);
+  font-weight: bold;
+}
+
+.orders-table tr:hover {
+  background: #fafafa;
+}
+
+.status-select {
+  padding: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
   </style>
 </head>
 
@@ -287,6 +323,26 @@
       </div>
     </div>
   </section>
+<!-- ========== الطلبات ========== -->
+<section class="orders-section">
+  <h3>الطلبات</h3>
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th>رقم الطلب</th>
+        <th>العميل</th>
+        <th>المنتجات</th>
+        <th>المجموع</th>
+        <th>الحالة</th>
+         <th>طريقة الدفع</th>
+        <th>إجراء</th>
+      </tr>
+    </thead>
+    <tbody id="orders-body">
+      <tr><td colspan="6">جارٍ تحميل الطلبات...</td></tr>
+    </tbody>
+  </table>
+</section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -321,9 +377,12 @@
     </div>
   </footer>
 
-  <div class="copyright">© 2025 GAZACart الحقوق محفوظة</div>
+  <div class="copyright">  2025 © جميع الحقوق محفوظة | Gaza Cart</div>
+    
 
   <script>
+    //const API_BASE = "https://gazacart.onrender.com/api";
+const API_BASE = "http://localhost:5000/api";
   // ===== فتح وإغلاق البوب أب =====
   function openPopup(id) {
     const popup = document.getElementById(id);
@@ -374,7 +433,7 @@ function renderProducts(store) {
     }
 
     try {
-      const res = await fetch(`https://gazacart.onrender.com/api/products/${currentEditingProduct._id}`, {
+      const res = await fetch(`${API_BASE}/products/${currentEditingProduct._id}`, {
           method: "PUT",
           headers: {
             "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -434,7 +493,7 @@ function renderProducts(store) {
     card.querySelector(".btn-delete").addEventListener("click", async () => {
       if (!confirm("هل أنت متأكد من حذف هذا المنتج؟")) return;
       try {
-        const res = await fetch(`https://gazacart.onrender.com/api/products/${prod._id}`, {
+        const res = await fetch(`${API_BASE}/products/${prod._id}`, {
           method: "DELETE",
           headers: { "Authorization": "Bearer " + localStorage.getItem("token") }
         });
@@ -487,7 +546,7 @@ function setupAddPopup(storeId) {
     }
 
     try {
-      const res = await fetch("https://gazacart.onrender.com/api/products", {
+      const res = await fetch(`${API_BASE}/products`, {
         method: "POST",
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -551,7 +610,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("https://gazacart.onrender.com/api/auth/merchant/signin", {
+        const res = await fetch(`${API_BASE}/auth/merchant/signin`, {
+
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -591,7 +651,8 @@ async function initStoreAdmin() {
   const editDescBtn = document.querySelector(".about button");
 
   try {
-    const res = await fetch("https://gazacart.onrender.com/api/stores/my/store", {
+    const res = await fetch(`${API_BASE}/stores/my/store`, {
+
       headers: { "Authorization":`Bearer ${token}` },
     });
     if (!res.ok) throw new Error("فشل في جلب بيانات المتجر");
@@ -628,7 +689,7 @@ async function initStoreAdmin() {
       }
 
       try {
-        const res = await fetch(`https://gazacart.onrender.com/api/stores/${storeId}`, {
+        const res = await fetch(`${API_BASE}/stores/${storeId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -659,16 +720,162 @@ async function initStoreAdmin() {
     });
     renderProducts(store);
     setupAddPopup(store._id);
+    loadStoreOrders(store._id);
   } catch (err) {
     console.error(err);
 productsGrid.innerHTML = '<p style="color:red;">حدث خطأ أثناء تحميل بيانات المتجر.</p>';
   }
 }
+// ===== تحميل طلبات المتجر للتاجر =====
+async function loadStoreOrders(storeId) {
+  const token = localStorage.getItem("token");
+  const ordersBody = document.getElementById("orders-body");
+  ordersBody.innerHTML = "<tr><td colspan='6'>جارٍ التحميل...</td></tr>";
+
+  if (!storeId || !token) {
+    ordersBody.innerHTML = "<tr><td colspan='6' style='color:red;'>❌ لم يتم العثور على المتجر أو تسجيل الدخول</td></tr>";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/orders/store/${storeId}?_=${Date.now()}`, {
+      headers: { "Authorization": `Bearer ${token}` },
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const orders = await res.json();
+
+    if (!Array.isArray(orders) || orders.length === 0) {
+      ordersBody.innerHTML = "<tr><td colspan='6'>لا توجد طلبات حالياً.</td></tr>";
+      return;
+    }
+
+    // عرض الطلبات بالجدول
+    ordersBody.innerHTML = "";
+  orders.forEach(order => {
+  const customerName = order.customer?.fullname || "غير معروف";
+
+  const productsHTML = order.items.map(i => {
+    const name = i.name || "-";
+    const price = i.price || 0;
+    return `${name} × ${i.quantity}`;
+  }).join("<br>");
+
+  const total = order.items.reduce((sum, i) => sum + (i.price || 0) * i.quantity, 0);
+
+  // تحديد نص طريقة الدفع وحالة الدفع
+  let paymentStatusHTML = "";
+  if (order.paymentMethod === "cash") {
+    paymentStatusHTML = `<span>دفع عند الاستلام</span>`;
+  } else if (order.paymentMethod === "bank") {
+    if (order.isPaid && order.paymentProof) {
+      paymentStatusHTML = `<span>مدفوع عبر البنك</span> 
+        <button class="view-proof-btn" data-proof="${order.paymentProof}">عرض الإثبات</button>`;
+    
+      } else {
+      paymentStatusHTML = `<span>بانتظار إثبات الدفع</span>`;
+    }
+  }
+
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${order._id.slice(-6)}</td>
+    <td>${customerName}</td>
+    <td>${productsHTML}</td>
+    <td>${total} شيكل</td>
+    <td>
+      <select class="status-select" data-id="${order._id}">
+        <option value="pending" ${order.status === "pending" ? "selected" : ""}>قيد المعالجة</option>
+        <option value="paid" ${order.status === "paid" ? "selected" : ""}>تم الدفع</option>
+        <option value="shipped" ${order.status === "shipped" ? "selected" : ""}>قيد التجهيز</option>
+        <option value="completed" ${order.status === "completed" ? "selected" : ""}>تم التسليم</option>
+        <option value="cancelled" ${order.status === "cancelled" ? "selected" : ""}>مرفوض</option>
+      </select>
+    </td>
+    
+         <td>${paymentStatusHTML}</td>
+      <span class="fa fa-eye fa-lg view-order" title="معلومات التوصيل">
+        <span class="ORDER_ID" style="display: none">${order._id}</span>
+      </span>
+    </td>
+    <td class="hidden-delivery" style="display:none;"
+      data-fullname="${order.fullName}"
+      data-address="${order.address}"
+      data-phone="${order.phone}"
+      data-altphone="${order.altPhone || '-'}"></td>
+  `;
+  ordersBody.appendChild(tr);
+});
+
+// عرض الإثبات عند الضغط على الزر
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('view-proof-btn')) {
+    const proofPath = e.target.dataset.proof;
+    window.open(`${API_BASE}${proofPath}`, '_blank'); // يفتح صورة الإثبات في نافذة جديدة
+  }
+});
+
+  } catch (err) {
+    console.error("❌ خطأ أثناء تحميل الطلبات:", err);
+    ordersBody.innerHTML = "<tr><td colspan='6' style='color:red;'>حدث خطأ أثناء تحميل الطلبات.</td></tr>";
+  }
+}
+document.addEventListener('change', async (e) => {
+  if (e.target.classList.contains('status-select')) {
+    const orderId = e.target.dataset.id;
+    const status = e.target.value;
+
+    try {
+      const res = await fetch(`${API_BASE}/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify({ status })
+      });
+      if(!res.ok) throw new Error('فشل في تحديث الحالة');
+      alert('✅ تم تحديث حالة الطلب');
+      loadStoreOrders(localStorage.getItem('storeId'));
+    } catch(err) {
+      console.error(err);
+      alert('❌ خطأ أثناء تحديث الحالة');
+    }
+  }
+});
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('view-order')) {
+    const row = e.target.closest('tr');
+    const hidden = row.querySelector('.hidden-delivery');
+
+    // toggle row details
+    let detailsRow = row.nextElementSibling;
+    if (detailsRow && detailsRow.classList.contains('customer-details')) {
+      detailsRow.style.display = detailsRow.style.display === 'none' ? 'table-row' : 'none';
+      return;
+    }
+
+    // إنشاء الصف
+    const tr = document.createElement('tr');
+    tr.className = 'customer-details';
+    tr.innerHTML = `
+      <td colspan="6">
+        <strong>الاسم:</strong> ${hidden.dataset.fullname} <br>
+        <strong>العنوان:</strong> ${hidden.dataset.address} <br>
+        <strong>الهاتف:</strong> ${hidden.dataset.phone} <br>
+        <strong>هاتف بديل:</strong> ${hidden.dataset.altphone}
+      </td>
+    `;
+    row.parentNode.insertBefore(tr, row.nextSibling);
+  }
+});
+
+
 // ===== إعادة تحميل المتجر =====
 function fetchStore() {
   initStoreAdmin();
 }
-
 
 </script>
  <script src="js/script.js"></script>
