@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   ? `https://gazacart.onrender.com${store.images[0]}`
   : "images/profile.jpg";
 
-storeImgEl.src = imageUrl;
+
 
 
     const rating = store.rating || 0;

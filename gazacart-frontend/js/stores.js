@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
    const imageUrl =
         store.images && store.images.length > 0
-          ? `http://localhost:5000${store.images[0]}`
+          ? `https://gazacart.onrender.com${store.images[0]}`
           : "images/Component 1.png";
 
 
