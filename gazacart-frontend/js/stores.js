@@ -10,16 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "store-card";
 
-    const imageUrl =
-  store.images && store.images.length > 0
-    ? `https://gazacart.onrender.com${store.images[0]}`
-    : store.logo
-      ? `https://gazacart.onrender.com/${store.logo.replace(/\\/g, "/")}`
-      : "images/Component 1.png";
+   const imageUrl =
+        store.images && store.images.length > 0
+          ? `http://localhost:5000${store.images[0]}`
+          : "images/Component 1.png";
 
 
-          
-
+    
       // أصبح كل متجر رابط قابل للنقر يفتح صفحة home.html مع الـ ID
       card.innerHTML = `
         <a href="home.html?id=${store._id}">

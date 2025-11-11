@@ -4,7 +4,7 @@
     <div class="cart-arrow"></div>
     <span class="close" onclick="document.getElementById('cartModal').style.display='none'">&times;</span>
     <div class="cart-body">
-      <div class="cart-items">
+      <div class="cart-items"> 
       </div>
       <div class="cart-summary"style="display:none;">
         <div class="summary-row">
@@ -20,7 +20,9 @@
     </div>
   </div>
 </div>
-
+<audio id="trash_sound" src="sounds/trash.mp3" preload="auto"></audio>
+  <source src="./sounds/trash.mp3" type="audio/mpeg">
+</audio>
 <!-- Payment Modal -->
 <div class="modal" id="paymentModal">
   <div class="modal-content payment-popup">
@@ -81,6 +83,17 @@
         نتمنى لك تسوقاً ممتعاً!
       </p>
       <button class="btn-done">أكمل التسوق</button>
+    </div>
+  </div>
+</div>
+<!-- Delete All Confirmation Modal -->
+<div class="modal" id="deleteAllModal">
+  <div class="modal-content confirm-popup" style="text-align:center; padding:20px; font-family:Cairo, sans-serif;">
+    <span class="close" onclick="document.getElementById('deleteAllModal').style.display='none'">&times;</span>
+    <p style=" margin-bottom:20px; font-size:18px;"> <strong>هل تريد حذف كل المنتجات من سلة التسوق؟</strong></p>
+    <div style="display:flex; justify-content:center; gap:10px;">
+      <button id="confirmDeleteAll" style="background:#28a745; color:#fff; padding:8px 20px; border:none; border-radius:6px; cursor:pointer;">تأكيد</button>
+      <button id="cancelDeleteAll" style="background:#dc3545; color:#fff; padding:8px 20px; border:none; border-radius:6px; cursor:pointer;">إلغاء</button>
     </div>
   </div>
 </div>

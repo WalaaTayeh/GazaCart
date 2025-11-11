@@ -446,7 +446,6 @@ function renderProducts(store) {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.message || "فشل في تعديل المنتج");
       }
-
       alert("✅ تم تعديل المنتج بنجاح");
       closePopup("editItemPopup");
       if (editImageInput) editImageInput.value = "";
@@ -458,6 +457,7 @@ function renderProducts(store) {
   });
 
   function openEditPopup(prod) {
+      console.log("Product data:", prod);
     currentEditingProduct = prod;
     editName.value = prod.name || "";
     editDesc.value = prod.description || "";
@@ -509,7 +509,6 @@ function renderProducts(store) {
     card.querySelector(".btn-edit").addEventListener("click", () => openEditPopup(prod));
   });
 }
-
 
 // ===== إضافة منتجات =====
 function setupAddPopup(storeId) {
@@ -772,6 +771,7 @@ async function loadStoreOrders(storeId) {
     if (order.isPaid && order.paymentProof) {
       paymentStatusHTML = `<span>مدفوع عبر البنك</span> 
         <button class="view-proof-btn" data-proof="${order.paymentProof}">عرض الإثبات</button>`;
+        
     
       } else {
       paymentStatusHTML = `<span>بانتظار إثبات الدفع</span>`;
@@ -795,9 +795,11 @@ async function loadStoreOrders(storeId) {
     </td>
     
          <td>${paymentStatusHTML}</td>
-      <span class="fa fa-eye fa-lg view-order" title="معلومات التوصيل">
-        <span class="ORDER_ID" style="display: none">${order._id}</span>
-      </span>
+   <td>
+  <span class="fa fa-eye fa-lg view-order" title="معلومات التوصيل"></span>
+  <span class="ORDER_ID" style="display:none;">${order._id}</span>
+</td>
+
     </td>
     <td class="hidden-delivery" style="display:none;"
       data-fullname="${order.fullName}"
@@ -812,7 +814,7 @@ async function loadStoreOrders(storeId) {
 document.addEventListener('click', e => {
   if (e.target.classList.contains('view-proof-btn')) {
     const proofPath = e.target.dataset.proof;
-    window.open(`${API_BASE}${proofPath}`, '_blank'); // يفتح صورة الإثبات في نافذة جديدة
+    window.open(`${API_BASE}${proofPath}`, '_blank'); 
   }
 });
 

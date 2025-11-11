@@ -93,8 +93,8 @@ router.post("/", protect, authorizeRoles("merchant"), upload.single("image"), as
       name,
       description: description || "",
       price: Number(price),
-      stock: 0,           // قيمة افتراضية
-      category: "عام",   // قيمة افتراضية
+      stock: req.body.stock ? Number(req.body.stock) : 0,
+        category: req.body.category || "عام",   
       images: imagePath ? [imagePath] : []
     });
 
@@ -125,7 +125,7 @@ router.put("/:id", protect, upload.single("image"), async (req, res) => {
     if (req.body.name) product.name = req.body.name;
     if (req.body.description) product.description = req.body.description;
     if (req.body.price) product.price = req.body.price;
-
+    if (req.body.stock !== undefined) product.stock = Number(req.body.stock);
     // تحديث الصورة الجديدة إذا تم رفعها
     if (req.file) {
       const imagePath = `/uploads/products/${req.file.filename}`;

@@ -8,7 +8,7 @@ const Product = require("../models/Product");
 // =========================
 exports.createStore = async (req, res) => {
   try {
-    const { name, description, category, images, logo, address, phone, social } = req.body;
+    const { name, description, category, images, address, phone, social } = req.body;
 
     const store = new Store({
       owner: req.user._id,
@@ -16,7 +16,6 @@ exports.createStore = async (req, res) => {
       description,
       category,
       images,
-      logo,
       address,
       phone,
       social
@@ -98,7 +97,7 @@ exports.getStoreById = async (req, res) => {
 
   try {
     const store = await Store.findById(id)
-      .populate("productsList", "name price images rating description");
+      .populate("productsList", "name price images rating description stock");
 
     if (!store) return res.status(404).json({ message: "المتجر غير موجود" });
 
@@ -115,7 +114,7 @@ exports.getStoreById = async (req, res) => {
 exports.getMyStore = async (req, res) => {
   try {
     const store = await Store.findOne({ owner: req.user._id })
-      .populate("productsList", "name price images rating description");
+      .populate("productsList", "name price images rating description stock");
 
     if (!store) {
       return res.status(404).json({ message: "لم يتم إنشاء متجر بعد" });

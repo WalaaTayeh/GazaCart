@@ -27,7 +27,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function clearCart() {
     localStorage.removeItem(getCartKey());
   }
-
+//  تشغيل صوت الحذف
+function playTrashSound() {
+  const audio = document.getElementById("trash_sound");
+  if (audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }
+}
   function updateCartCount() {
     const cartCount = document.querySelector(".cart span");
     if (!cartCount) return;
@@ -37,68 +44,172 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderCartItems() {
-    const cartItems = document.querySelector(".cart-items");
-    const cartSummary = document.querySelector(".cart-summary");
-    if (!cartItems) return;
+  const cartItems = document.querySelector(".cart-items");
+  const cartSummary = document.querySelector(".cart-summary");
+  if (!cartItems) return;
 
-    const cart = getCart();
-    cartItems.innerHTML = "";
+  const cart = getCart();
+  cartItems.innerHTML = "";
 
-    if (cart.length === 0) {
-      cartItems.innerHTML = `
-        <div class="empty-cart" style="text-align:center; padding:20px; font-family:Cairo, sans-serif;">
-          <p>لا يوجد منتجات في سلة تسوقك</p>
-          <a href="index.html" class="btn yellow" style="display:inline-block; margin-top:10px; padding:8px 16px; border-radius:6px; text-decoration:none; color:#fff;">ابدأ التسوق</a>
+ if (cart.length === 0) {
+  cartItems.innerHTML = `
+    <div class="empty-cart" style="text-align:center; padding:20px; font-family:Cairo, sans-serif;">
+      <span class="material-icons text-color-c notranslate" style="font-size:120px;">shopping_cart</span>
+      <p style="margin-top: 20px; font-size: 18px; color:#555;">لا يوجد أي منتجات في سلة تسوقك</p>
+      <a href="index.html" class="btn yellow" style="display:inline-block; margin-top:10px; padding:8px 16px; border-radius:6px; text-decoration:none; color:#fff;">ابدأ التسوق</a>
+    </div>
+  `;
+  if (cartSummary) cartSummary.style.display = "none";
+  return;
+}
+
+
+  if (cartSummary) cartSummary.style.display = "block";
+
+  let total = 0;
+  cart.forEach(item => {
+    const price = Number(item.price) || 0;
+    total += price * item.quantity;
+
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <img src="${item.image || 'images/default.png'}" alt="${item.name || 'منتج'}" class="item-img">
+      <div class="item-info">
+        <h4 class="item-name">${item.name || 'منتج بدون اسم'}</h4>
+        <p class="item-store">${item.store || 'متجر غير معروف'}</p>
+        <p><strong>السعر :</strong> <span class="item-price" data-price="${price}">${price}</span> شيكل</p>
+
+        <div class="item-controls">
+          <button class="qty-btn minus" data-id="${item.id}">-</button>
+          <span class="qty">${item.quantity}</span>
+          <button class="qty-btn plus" data-id="${item.id}">+</button>
         </div>
-      `;
-      if (cartSummary) cartSummary.style.display = "none";
-      return;
-    }
+      </div>
 
-    if (cartSummary) cartSummary.style.display = "block";
+      <button class="delete-btn" data-id="${item.id}">
+        <img src="images/Frame 7624.png" alt="حذف">
+      </button>
+    `;
+    cartItems.appendChild(div);
+  });
 
-    let total = 0;
-    cart.forEach(item => {
-      const price = Number(item.price) || 0;
-      total += price * item.quantity;
-      const div = document.createElement("div");
-      div.className = "cart-item";
-      div.innerHTML = `
-        <img src="${item.image || 'images/default.png'}" alt="${item.name || 'منتج'}">
-        <div class="item-info">
-          <h4>${item.name || 'منتج بدون اسم'}</h4>
-          <p>${item.store || 'متجر غير معروف'}</p>
-          <p><strong>السعر :</strong> ${price} شيكل</p>
-          <p><strong>الكمية :</strong> ${item.quantity}</p>
-        </div>
-        <button class="delete-btn" data-id="${item.id}">
-          <img src="images/Frame 7624.png" alt="حذف">
-        </button>
-      `;
-      cartItems.appendChild(div);
+//  إضافة نص "حذف الكل" أسفل العناصر بمحاذاة أزرار الحذف
+const deleteAllText = document.createElement("p");
+deleteAllText.textContent = "حذف الكل";
+deleteAllText.classList.add("delete-all-text");
+cartItems.appendChild(deleteAllText);
+
+
+// عند الضغط عليه
+deleteAllText.addEventListener("click", () => {
+   const cartModal = document.getElementById("cartModal");
+   if (cartModal) cartModal.style.display = "none";
+  showDeleteAllConfirm();
+});
+
+
+
+  // =============================
+  // الأحداث للعناصر الفردية
+  // =============================
+  cartItems.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      removeFromCart(id);
     });
+  });
 
-    cartItems.querySelectorAll(".delete-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-id");
-        removeFromCart(id);
-      });
+  cartItems.querySelectorAll(".qty-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-id");
+      let cart = getCart();
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+
+      if (btn.classList.contains("plus")) {
+        item.quantity += 1;
+      } else if (btn.classList.contains("minus") && item.quantity > 1) {
+        item.quantity -= 1;
+      }
+
+      saveCart(cart);
+      renderCartItems();
+      updateCartCount();
     });
+  });
 
-    const deliveryCost = total > 0 ? 10 : 0;
-    const deliveryEl = document.querySelector(".cart-summary .summary-row:nth-child(1) span:last-child");
-    const totalEl = document.querySelector(".cart-summary .summary-row.total span:last-child");
-    if (deliveryEl) deliveryEl.textContent = deliveryCost + " شيكل";
-    if (totalEl) totalEl.textContent = (total + deliveryCost) + " شيكل";
+  // تحديث المجموع والتوصيل
+  const deliveryCost = total > 0 ? 10 : 0;
+  const deliveryEl = document.querySelector(".cart-summary .summary-row:nth-child(1) span:last-child");
+  const totalEl = document.querySelector(".cart-summary .summary-row.total span:last-child");
+  if (deliveryEl) deliveryEl.textContent = deliveryCost + " شيكل";
+  if (totalEl) totalEl.textContent = (total + deliveryCost) + " شيكل";
+}
+
+// عرض مودال تأكيد الحذف الكلي
+function showDeleteAllConfirm() {
+  const modal = document.getElementById("deleteAllModal");
+  if (modal) modal.style.display = "flex";
+}
+
+// زر الحذف الكلي داخل السلة
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-all-btn")) {
+    showDeleteAllConfirm();
   }
+});
 
-  window.removeFromCart = function(productId) {
+// أزرار التأكيد والإلغاء
+document.getElementById("confirmDeleteAll")?.addEventListener("click", () => {
+  playTrashSound();
+  clearCart();
+  updateCartCount();
+  renderCartItems();
+
+  //  إخفاء مودال الحذف
+  const deleteAllModal = document.getElementById("deleteAllModal");
+  if (deleteAllModal) deleteAllModal.style.display = "none";
+
+  //  إظهار مودال السلة من جديد وهي فارغة
+  const cartModal = document.getElementById("cartModal");
+  if (cartModal) cartModal.style.display = "flex";
+});
+
+document.getElementById("cancelDeleteAll")?.addEventListener("click", () => {
+  // إغلاق مودال التأكيد
+  const deleteAllModal = document.getElementById("deleteAllModal");
+  if (deleteAllModal) deleteAllModal.style.display = "none";
+
+  // إرجاع مودال السلة كما كانت
+  const cartModal = document.getElementById("cartModal");
+  if (cartModal) cartModal.style.display = "flex";
+});
+
+ window.removeFromCart = function(productId) {
+  const itemElement = document.querySelector(`.cart-item [data-id="${productId}"]`)?.closest(".cart-item");
+  
+  if (itemElement) {
+   
+    playTrashSound();
+    itemElement.classList.add("removing");
+
+    setTimeout(() => {
+      let cart = getCart();
+      cart = cart.filter(item => item.id !== productId);
+      saveCart(cart);
+      updateCartCount();
+      renderCartItems();
+    }, 400);   
+  } else {
     let cart = getCart();
     cart = cart.filter(item => item.id !== productId);
     saveCart(cart);
     updateCartCount();
     renderCartItems();
   }
+};
+
 
   function addToCart(productId, productName, productStore, productPrice, productImage) {
     let cart = getCart();
@@ -279,7 +390,7 @@ const response = await fetch("https://gazacart.onrender.com/api/orders", {
   }
 
   // ==========================
-  // 🔔 صوت النجاح
+  //  صوت النجاح
   // ==========================
   function playSuccessSound() {
     try {

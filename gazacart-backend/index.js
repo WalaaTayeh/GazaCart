@@ -45,6 +45,9 @@ app.use('/api/orders', orderRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use(express.static(path.join(__dirname, '../gazacart-frontend')));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
 app.use((req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     return res.status(404).json({ error: 'API route not found' });
