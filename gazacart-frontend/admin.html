@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GAZACART | لوحة تحكم الأدمن</title>
+  <link rel="icon" type="image/png" href="images/cart.svg" />
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ================== تسجيل الدخول ================== */
+     #login-page { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; } 
+     .login-box { background: var(--white); padding: 40px 50px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); text-align: center; width: 340px; } 
+     .login-box h2 { margin-bottom: 25px; color: var(--black); } 
+     .login-box input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc; font-size: 15px; } 
+     .login-box button { width: 100%; padding: 10px; background: var(--yellow); border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; } 
+     .login-box button:hover { background: #fbbf24; } 
+     .error { color: red; font-size: 14px; margin-bottom: 10px; display: none; }
+
+    :root{
+      --yellow: #facc15;
+      --black: #1c1c1c;
+      --gray: #f8f8f8;
+      --white: #fff;
+      --red: #f87171;
+      --black-50: #f3f4f6; 
+      --black-900: #111827; 
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Cairo", sans-serif;
+      background-color:var(--gray);
+      color:var(--black);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* HEADER */
+    header{
+      display: none; 
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 20px;
+      background:linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0));
+      border-bottom:1px solid #eee;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .brand img{width:36px;height:36px}
+    .brand h2{margin:0;font-size:18px;color:var(--black)}
+    .header-right{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      position:relative;
+    }
+    .admin-dropdown{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:var(--white);
+      padding:8px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      border:1px solid #eee;
+    }
+    .admin-name{font-weight:700}
+    .dropdown-menu{
+      position:absolute;
+      right:0;
+      top:calc(100% + 8px);
+      background:var(--white);
+      border-radius:10px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+      padding:8px;
+      min-width:160px;
+      display:none;
+      z-index:50;
+    }
+    .dropdown-menu.active{display:block}
+    .dropdown-menu button{
+      width:100%;
+      text-align:right;
+      background:none;
+      border:none;
+      padding:8px 10px;
+      cursor:pointer;
+      border-radius:6px;
+    }
+    .dropdown-menu button:hover{background:#f3f4f6}
+
+    /* LAYOUT */
+   .app {
+    display: none; /* بدل flex خليها مخفية من البداية */
+    flex: 1;
+    height: calc(100vh - 62px);
+    overflow: hidden;
+}
+
+
+    .sidebar{
+      width:230px;
+      background-color:var(--black);
+      color:var(--white);
+      display:flex;
+      flex-direction:column;
+      padding-top:20px;
+      flex-shrink:0;
+      gap:6px;
+    }
+    .sidebar a{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 20px;
+      color:var(--white);
+      text-decoration:none;
+      transition:0.2s;
+      font-size:16px;
+      cursor:pointer;
+    }
+    .sidebar a:hover,
+    .sidebar a.active{ background-color:var(--yellow); color:var(--black) }
+
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      padding:20px;
+      overflow:auto;
+    }
+
+    .page{ display:none; flex-direction:column; min-height:100% }
+    .page.active{ display:flex }
+
+    h1{ font-size:22px; margin:0 0 14px 0 }
+
+    .stats{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .card{
+      background:var(--white);
+      padding:20px;
+      border-radius:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.06);
+      flex:1 1 180px;
+      min-width:160px;
+      text-align:center;
+    }
+    .card h2{ margin:0; color:var(--yellow); font-size:28px }
+    .card p{ margin:6px 0 0 0; color:#666 }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:var(--white);
+      border-radius:10px;
+      overflow:hidden;
+      margin-top:12px;
+    }
+    th,td{
+      padding:10px;
+      border-bottom:1px solid #eee;
+      text-align:center;
+      font-size:14px;
+    }
+    thead th{ background:#fafafa; font-weight:700 }
+
+    .actions{ display:flex; justify-content:center; gap:8px; align-items:center }
+    .actions button{
+      width:36px;height:36px;border:none;border-radius:8px;display:flex;justify-content:center;align-items:center;cursor:pointer;font-size:16px;transition:0.15s;
+    }
+    .btn-delete{ background:#fecaca; color:#b91c1c }
+    .btn-delete:hover{ background:#f87171; color:white }
+    .btn-edit{ background:#fef3c7; color:#b45309 }
+    .btn-edit:hover{ background:#fde68a }
+
+    /* popup overlay */
+    .popup-overlay{
+      position:fixed; inset:0; display:none; justify-content:center; align-items:center;
+      background:rgba(0,0,0,0.6); z-index:999;
+      padding:20px;
+    }
+    .popup-overlay.active{ display:flex }
+
+    .popup-box{
+      background:var(--white);
+      border-radius:14px;
+      width:420px;
+      max-width:95%;
+      padding:18px 20px;
+      position:relative;
+      text-align:right;
+      box-shadow:0 6px 28px rgba(0,0,0,0.2);
+    }
+    .popup-box h3{ margin:0 0 10px 0 }
+    .popup-box input, .popup-box select {
+      width:100%;
+      padding:10px;
+      margin-bottom:10px;
+      border-radius:8px;
+      border:1px solid #ddd;
+      outline:none;
+      background: var(--black-50);
+      color: var(--black-900);
+      font-size:14px;
+    }
+    .popup-box textarea{
+      width:100%; min-height:80px; padding:10px;border-radius:8px;border:1px solid #ddd;background: var(--black-50); color: var(--black-900)
+    }
+    .popup-box .popup-actions{display:flex; gap:8px; margin-top:6px}
+    .popup-box .btn{
+      padding:10px; border-radius:8px; border:none; cursor:pointer; font-weight:700
+    }
+    .popup-box .btn.save{ background:var(--yellow); color:var(--black) }
+    .popup-box .btn.cancel{ background:#eee; color:#333 }
+
+    .close-popup{
+      position:absolute; left:12px; top:12px; background:none; border:none; font-size:22px; cursor:pointer;
+    }
+
+    /* small helpers */
+    .top-actions{ display:flex; justify-content:flex-start; gap:8px; margin-bottom:8px; flex-wrap:wrap }
+    .primary-btn{ background:var(--yellow); border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-weight:700 }
+    .secondary-btn{ background:#fff; border:1px solid #ddd; padding:8px 12px; border-radius:8px; cursor:pointer; }
+
+    /* responsive */
+    @media (max-width:900px){
+      .sidebar{ display:none }
+      header{ padding:10px }
+      .app{ flex-direction:column }
+    }
+
+
+    /* ====== POPUPS ====== */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+  padding: 20px;
+}
+.popup-overlay.active { display: flex; }
+
+.popup-box {
+  background: var(--white);
+  border-radius: 14px;
+  width: 420px;
+  max-width: 95%;
+  padding: 18px 20px;
+  position: relative;
+  text-align: right;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.2);
+}
+.popup-box h3 { margin: 0 0 10px 0; }
+
+.popup-box input, .popup-box select, .popup-box textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: var(--black-50);
+  color: var(--black-900);
+  font-size: 14px;
+}
+
+.popup-box .popup-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.popup-box .btn {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+.popup-box .btn.save { background: var(--yellow); color: var(--black); }
+.popup-box .btn.cancel { background: #eee; color: #333; }
+
+.close-popup {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* زر الرفض */
+.danger-btn {
+  background-color: #f87171; /* أحمر فاتح */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.danger-btn:hover {
+  background-color: #b91c1c; /* أحمر داكن عند التحويم */
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+
+<!-- ====== LOGIN PAGE ====== -->
+<div id="login-page">
+  <div class="login-box">
+    <h2>تسجيل دخول الأدمن</h2>
+    <div class="error" id="loginError"></div>
+    <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" />
+    <input type="password" id="loginPassword" placeholder="كلمة المرور" />
+    <button id="loginBtn">تسجيل الدخول</button>
+  </div>
+</div>
+
+<!-- ====== APP ====== -->
+
+  <header>
+    <div class="brand">
+      <img src="images/cart.svg" alt="logo" onerror="this.style.display='none'"/>
+      <h2>GAZACART | لوحة تحكم الأدمن</h2>
+    </div>
+
+    <div class="header-right">
+      <div id="last-sync" style="font-size:13px;color:#666"></div>
+
+      <div class="admin-dropdown" id="adminDropdownBtn" tabindex="0" aria-haspopup="true">
+        <span style="display:flex;align-items:center;gap:8px">
+          <i data-lucide="user" style="width:18px;height:18px"></i>
+          <span class="admin-name" id="adminName">Admin</span>
+        </span>
+        <i data-lucide="chevron-down" style="width:16px;height:16px"></i>
+      </div>
+
+      <div class="dropdown-menu" id="adminDropdownMenu" role="menu" aria-hidden="true">
+      <!-- <button id="profileBtn">الصفحة الشخصية</button>--> 
+        <button id="logoutTop">تسجيل الخروج</button>
+      </div>
+    </div>
+  </header>
+  <div class="app">
+  <aside class="sidebar" aria-label="الشريط الجانبي">
+    <a href="#" class="active" data-page="dashboard"><i data-lucide="layout-dashboard"></i> لوحة التحكم</a>
+    <a href="#" data-page="users"><i data-lucide="users"></i> المستخدمين</a>
+    <a href="#" data-page="stores"><i data-lucide="store"></i> المتاجر</a>
+    <a href="#" data-page="pending-merchants"><i data-lucide="user-plus"></i> التجار الجدد</a>
+    <a href="#" data-page="products"><i data-lucide="box"></i> المنتجات</a>
+    <a href="#" data-page="orders"><i data-lucide="shopping-bag"></i> الطلبات</a>
+    <a href="#" data-page="reports"><i data-lucide="pie-chart"></i> التقارير</a>
+    <a href="#" data-page="settings"><i data-lucide="settings"></i> الإعدادات</a>
+</aside>
+
+
+  <main class="main">
+   <!-- DASHBOARD -->
+      <section id="dashboard" class="page active">
+        <h1>مرحبًا بك في لوحة التحكم</h1>
+        <div class="stats">
+          <div class="card"><h2 id="stat-stores">-</h2><p>المتاجر</p></div>
+          <div class="card"><h2 id="stat-products">-</h2><p>المنتجات</p></div>
+          <div class="card"><h2 id="stat-orders">-</h2><p>الطلبات</p></div>
+          <div class="card"><h2 id="stat-users">-</h2><p>العملاء</p></div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="flex:1 1 420px; background:var(--white); padding:16px; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.05)">
+            <h3 style="margin:0 0 8px 0">أحدث الطلبات</h3>
+            <table>
+              <thead><tr><th>رقم الطلب</th><th>العميل</th><th>المجموع</th><th>اسم المتجر</th><th>المنتجات</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <tbody id="dashboard-orders-body"></tbody>
+            </table>
+          </div>
+
+          <div style="width:320px; background:var(--white); padding:16px; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.05)">
+            <h3 style="margin:0 0 8px 0">معلومات سريعة</h3>
+            <p style="margin:0;color:#666;font-size:14px">تستطيع إدارة المستخدمين، المتاجر، المنتجات والطلبات من القوائم.</p>
+            <div style="margin-top:12px">
+              <button class="primary-btn" onclick="openPopup('addUser')"> إضافة مستخدم</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section id="users" class="page">
+        <h1>المستخدمين</h1>
+        <div class="top-actions">
+          <button class="primary-btn" onclick="openPopup('addUser')"> إضافة مستخدم</button>
+        </div>
+        <table>
+          <thead><tr><th>الاسم</th><th>البريد</th><th>رقم الهاتف</th><th>الدور</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody id="users-body"></tbody>
+        </table>
+      </section>
+
+      <!-- STORES -->
+      <section id="stores" class="page">
+        <h1>المتاجر</h1>
+        <div class="top-actions">
+          <button class="primary-btn" onclick="openPopup('addStore')">إضافة متجر</button>
+        </div>
+        <table>
+          <thead><tr><th>الاسم</th><th>المالك</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+          <tbody id="stores-body"></tbody>
+        </table>
+      </section>
+<!-- PENDING MERCHANTS -->
+<section id="pending-merchants" class="page">
+  <h1>التجار الجدد</h1>
+  <p style="color:#666;font-size:14px">هؤلاء التجار سجلوا بحسابهم ولكن لم يتم إنشاء متجر لهم بعد.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>الاسم</th>
+        <th>البريد الإلكتروني</th>
+        <th>رقم الهاتف</th>
+        <th>إجراء</th>
+      </tr>
+    </thead>
+    <tbody id="pending-merchants-body"></tbody>
+  </table>
+</section>
+
+      <!-- PRODUCTS -->
+      <section id="products" class="page">
+        <h1>المنتجات</h1>
+        <div class="top-actions">
+          <button class="primary-btn" onclick="openPopup('addProduct')"> إضافة منتج</button>
+        </div>
+        <table>
+          <thead><tr><th>الاسم</th><th>السعر</th><th>المخزون</th><th>المتجر</th><th>الفئة</th><th>إجراءات</th></tr></thead>
+          <tbody id="products-body"></tbody>
+        </table>
+      </section>
+
+      <!-- ORDERS -->
+      <section id="orders" class="page">
+        <h1>الطلبات</h1>
+        <table>
+          <thead><tr><th>رقم الطلب</th><th>العميل</th><th>الاجمالي</th><th>اسم المتجر</th><th>المنتجات</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </section>
+
+      <!-- REPORTS -->
+      <section id="reports" class="page">
+        <h1>التقارير</h1>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div style="flex:1 1 380px; background:var(--white); padding:16px; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.05)">
+            <h3>مخطط دائري - ملخص الإحصائيات</h3>
+            <canvas id="pieChart" style="max-width:100%;height:260px"></canvas>
+          </div>
+          <div style="flex:1 1 360px; background:var(--white); padding:16px; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.05)">
+            <h3>زيارات (افتراضية)</h3>
+            <p style="color:#666">هذا رسم تجريبي لزيارات الموقع اليومية (قابلة للتحديث لاحقًا).</p>
+            <div id="visits-stats" style="margin-top:8px;color:#111;font-weight:700">تقريبي: 1,230 زيارة اليوم</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings" class="page">
+        <h1>الإعدادات</h1>
+        <div style="display:flex;gap:8px;flex-direction:column;max-width:420px">
+          <input type="text" placeholder="الاسم" />
+          <input type="email" placeholder="البريد الإلكتروني" />
+          <button class="primary-btn">حفظ</button>
+        </div>
+      </section>
+  </main>
+</div>
+<!-- ================= POPUPS ================= -->
+<!-- إضافة مستخدم -->
+ <div class="popup-overlay" id="popup-addUser">
+<div class="popup-box">
+  <button class="close-popup" onclick="closePopup('addUser')">&times;</button>
+  <h3>إضافة مستخدم جديد</h3>
+
+  <input type="text" id="userName" placeholder="الاسم الكامل" />
+  <input type="email" id="userEmail" placeholder="البريد الإلكتروني" />
+  <input type="text" id="userPhone" placeholder="رقم الهاتف" />
+
+
+  <select id="userRole">
+    <option value="customer">عميل</option>
+    <option value="merchant">تاجر</option>
+    <option value="admin">أدمن</option>
+  </select>
+
+  <!-- حقل كلمة المرور (يظهر فقط لبعض الأدوار) -->
+  <input type="password" id="userPassword" placeholder="كلمة المرور" style="display:none" />
+
+  <div class="popup-actions">
+    <button class="btn save" id="saveUserBtn">حفظ</button>
+    <button class="btn cancel" onclick="closePopup('addUser')">إلغاء</button>
+  </div>
+</div>
+</div>
+<script>
+// ====== إظهار/إخفاء كلمة المرور حسب الدور ======
+const userRoleSelect = document.getElementById("userRole");
+const userPasswordInput = document.getElementById("userPassword");
+
+userRoleSelect.addEventListener("change", () => {
+  const role = userRoleSelect.value;
+
+  if (role === "merchant" || role === "admin") {
+    userPasswordInput.style.display = "block";
+  } else {
+    userPasswordInput.style.display = "none";
+    userPasswordInput.value = ""; // إزالة أي كلمة مرور قديمة
+  }
+});
+</script>
+<!-- تعديل مستخدم -->
+<div class="popup-overlay" id="popup-editUser">
+  <div class="popup-box">
+    <button class="close-popup" onclick="closePopup('editUser')">&times;</button>
+    <h3>تعديل بيانات المستخدم</h3>
+
+    <input type="text" id="editUserName" placeholder="الاسم الكامل" />
+    <input type="email" id="editUserEmail" placeholder="البريد الإلكتروني" />
+    <input type="text" id="editUserPhone" placeholder="رقم الهاتف" />
+
+    <select id="editUserRole">
+      <option value="customer">عميل</option>
+      <option value="merchant">تاجر</option>
+      <option value="admin">أدمن</option>
+    </select>
+
+    <!-- حقل كلمة المرور (يظهر فقط لبعض الأدوار) -->
+    <input type="password" id="editUserPassword" placeholder="كلمة المرور" style="display:none" />
+
+    <div class="popup-actions">
+      <button class="btn save" id="updateUserBtn">تحديث</button>
+      <button class="btn cancel" onclick="closePopup('editUser')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // إظهار/إخفاء كلمة المرور حسب الدور أثناء تعديل المستخدم
+  const editUserRoleSelect = document.getElementById("editUserRole");
+  const editUserPasswordInput = document.getElementById("editUserPassword");
+
+  editUserRoleSelect.addEventListener("change", () => {
+    const role = editUserRoleSelect.value;
+    if (role === "merchant" || role === "admin") {
+      editUserPasswordInput.style.display = "block";
+    } else {
+      editUserPasswordInput.style.display = "none";
+      editUserPasswordInput.value = "";
+    }
+  });
+</script>
+
+<!-- إضافة متجر -->
+<div class="popup-overlay" id="popup-addStore">
+  <div class="popup-box">
+    <button class="close-popup" onclick="closePopup('addStore')">&times;</button>
+    <h3 id="popupStoreTitle">إضافة متجر جديد</h3>
+
+    <div class="input-group">
+      <label for="storeName">اسم المتجر</label>
+      <input type="text" id="storeName" placeholder="اسم المتجر">
+    </div>
+
+    <div class="input-group">
+      <label for="storeOwner">مالك المتجر</label>
+      <input type="text" id="storeOwner" placeholder="مالك المتجر (ID أو اسم)">
+    </div>
+
+    <div class="input-group">
+      <label for="storeDescription">وصف المتجر</label>
+      <textarea id="storeDescription" placeholder="نبذة عن المتجر..."></textarea>
+    </div>
+
+    <div class="input-group">
+      <label for="storeLogoInput">شعار المتجر </label>
+      <input type="file" id="storeLogoInput" accept="image/*">
+        <img id="logoPreview" src="images/profile.jpg" alt="Logo preview" 
+           style="width:100px;height:100px;border-radius:10px;margin-top:10px;">
+    </div>
+
+    <div class="popup-actions">
+      <button class="btn save" id="saveStoreBtn">إضافة</button>
+      <button class="btn cancel" onclick="closePopup('addStore')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- إضافة منتج -->
+<div class="popup-overlay" id="popup-addProduct">
+  <div class="popup-box">
+    <button class="close-popup" onclick="closePopup('addProduct')">&times;</button>
+    <h3>إضافة منتج جديد</h3>
+    <input type="text" id="productName" placeholder="اسم المنتج">
+    <input type="number" id="productPrice" placeholder="السعر">
+    <input type="number" id="productStock" placeholder="الكمية">
+    <select id="productStore">
+      <option value="">اختر المتجر</option>
+    </select>
+    <input type="file" id="productImage">
+    <div class="popup-actions">
+      <button class="btn save" id="saveProductBtn">حفظ</button>
+      <button class="btn cancel" onclick="closePopup('addProduct')">إلغاء</button>
+    </div>
+  </div>
+</div>
+<!-- تعديل منتج -->
+<div class="popup-overlay" id="popup-editProduct">
+  <div class="popup-box">
+    <button class="close-popup" onclick="closePopup('editProduct')">&times;</button>
+    <h3>تعديل المنتج</h3>
+    <input type="text" id="editProductName" placeholder="اسم المنتج">
+    <input type="number" id="editProductPrice" placeholder="السعر">
+    <input type="number" id="editProductStock" placeholder="الكمية">
+    <select id="editProductStore">
+      <option value="">اختر المتجر</option>
+    </select>
+    <input type="file" id="editProductImage">
+    <div class="popup-actions">
+      <button class="btn save" id="updateProductBtn">تحديث</button>
+      <button class="btn cancel" onclick="closePopup('editProduct')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- إضافة متجر للتاجر -->
+<div class="popup-overlay" id="popup-addStoreForMerchant">
+  <div class="popup-box">
+    <button class="close-popup" onclick="closePopup('addStoreForMerchant')">&times;</button>
+    <h3>إضافة متجر للتاجر</h3>
+
+    <input type="text" id="merchantNameDisplay" placeholder="اسم التاجر" disabled>
+    <input type="text" id="merchantStoreName" placeholder="اسم المتجر" required>
+    <textarea id="merchantStoreDescription" placeholder="وصف المتجر"></textarea>
+    <select id="merchantStoreCategory" required>
+      <option value="">اختر الفئة</option>
+      <option value="clothes"> ملابس</option>
+      <option value="accessories"> إكسسوارات</option>
+      <option value="sweets"> حلويات</option>
+      <option value="electronics"> إلكترونيات</option>
+      <option value="other"> أخرى</option>
+    </select>
+    <input type="file" id="merchantStoreLogo" name="logo" accept="image/*">
+
+    <div class="popup-actions">
+      <button class="btn save" id="saveMerchantStoreBtn">إضافة المتجر</button>
+      <button class="btn cancel" onclick="closePopup('addStoreForMerchant')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+   
+
+
+<script src="js/admin.js"></script>
+</body> 
+
+
+</html>

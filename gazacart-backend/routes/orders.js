@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 router.use((req, res, next) => {
-  console.log('🧭 وصل إلى orders.js:', req.method, req.originalUrl);
+  console.log(' وصل إلى orders.js:', req.method, req.originalUrl);
   next();
 });
 const Order = require('../models/Order');
@@ -9,8 +10,6 @@ const Store = require('../models/Store');
 const Product = require('../models/Product');
 const { protect, authorizeRoles } = require('../middleware/auth');
 const upload = require('../middleware/upload');
-
-
 
 
 // ===============================
@@ -64,7 +63,7 @@ router.post(
           name: productData.name,
           price: productData.price,
           quantity: item.quantity,
-          store: productData.store // <- هذا المرجع للمتجر
+          store: productData.store 
         };
       }));
 
@@ -105,12 +104,27 @@ router.get('/my', protect, async (req, res) => {
 });
 
 // ===============================
-// 🛠️ للأدمن: جلب كل الطلبات
+//  للأدمن: جلب كل الطلبات
 router.get('/', protect, authorizeRoles('admin'), async (req, res) => {
   try {
     const orders = await Order.find()
       .populate('customer', 'fullname email phone')
+      .populate({
+        path: 'items.product',
+        select: 'name price store',
+        populate: {
+          path: 'store',
+          select: 'name',
+          model: 'Store'
+        }
+      })
+      .populate({
+        path: 'items.store',
+        select: 'name',
+        model: 'Store'
+      })
       .sort('-createdAt');
+
     res.json(orders);
   } catch (err) {
     console.error(err);
@@ -141,19 +155,53 @@ router.get("/store/:storeId", protect, authorizeRoles("merchant"), async (req, r
     res.status(500).json({ message: "Server error: " + err.message });
   }
 });
-// تحديث حالة الطلب
+//تحديث حالة الطلب 
 router.put('/:id/status', protect, authorizeRoles('merchant', 'admin'), async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  const validStatuses = ["pending","processing","shipped","delivered","cancelled","paid","completed"];
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'معرّف الطلب غير صالح' });
+  }
+
+  if (!status || !validStatuses.includes(status)) {
+    return res.status(400).json({ message: "حالة غير صالحة" });
+  }
+
   try {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(id);
     if (!order) return res.status(404).json({ message: 'الطلب غير موجود' });
 
-    order.status = req.body.status || order.status;
+    order.status = status;
     await order.save();
+
     res.json({ message: 'تم تحديث حالة الطلب', order });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'حدث خطأ' });
+    console.error("خطأ في تحديث الطلب:", err);
+    res.status(500).json({ message: 'حدث خطأ في السيرفر' });
   }
+});
+
+// DELETE طلب
+router.delete('/:id', protect, authorizeRoles('admin', 'merchant'), async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'معرّف الطلب غير صالح' });
+  }
+
+  try {
+ const deletedOrder = await Order.findByIdAndDelete(id);
+if (!deletedOrder) return res.status(404).json({ message: 'الطلب غير موجود' });
+
+res.json({ message: '✅ تم حذف الطلب بنجاح' });
+
+} catch (err) {
+  console.error("خطأ كامل أثناء الحذف:", err);
+  res.status(500).json({ message: err.message });
+}
+
 });
 
 

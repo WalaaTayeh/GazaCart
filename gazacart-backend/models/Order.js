@@ -30,11 +30,10 @@ const OrderSchema = new Schema({
 // حالة الطلب
   status: { 
     type: String, 
-    enum: ['pending','paid','shipped','completed','cancelled'], 
+    enum: ["pending","processing","shipped","delivered","cancelled","paid","completed"], 
     default: 'pending' 
   },
 
-  paymentMethod: { type: String, default: 'cash' },
   createdAt: { type: Date, default: Date.now }
 });
 

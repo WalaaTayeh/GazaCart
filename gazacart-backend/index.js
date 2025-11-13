@@ -6,6 +6,7 @@ const path = require('path');
 
 // ========== Import Routes ==========
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
 const storeRoutes = require('./routes/stores');
 const productRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 
 // ========== API Routes ==========
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);

@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { protect, authorizeRoles } = require('../middleware/auth');
 
 // ===== Signup الزبون =====
 router.post("/signup", async (req, res) => {
@@ -156,5 +157,55 @@ router.post("/merchant/signin", async (req, res) => {
     res.status(500).json({ message: "خطأ في السيرفر" });
   }
 });
+// ===== تسجيل دخول الأدمن =====
+router.post("/admin/signin", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res.status(400).json({ message: "الرجاء إدخال البريد وكلمة المرور" });
+
+    const admin = await User.findOne({ email, role: "admin" }).select("+password");
+    if (!admin) return res.status(400).json({ message: "أدمن غير موجود ❌" });
+
+    // ✅ تحقق من حالة الأدمن
+    if (admin.status === 'blocked') {
+      return res.status(403).json({ message: "تم حظر هذا الأدمن" });
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) return res.status(400).json({ message: "كلمة المرور غير صحيحة ❌" });
+
+    const token = jwt.sign(
+      { id: admin._id, role: admin.role },
+      process.env.JWT_SECRET || "YOUR_SECRET_KEY",
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      message: "تم تسجيل الدخول كأدمن ✅",
+      token,
+      user: {
+        id: admin._id,
+        fullname: admin.fullname,
+        email: admin.email,
+        role: admin.role
+      }
+    });
+  } catch (error) {
+    console.error("Admin Signin error:", error);
+    res.status(500).json({ message: "خطأ في السيرفر" });
+  }
+});
+// ===== Get All Users (For Admin Dashboard) =====
+router.get("/all", protect, authorizeRoles("admin"), async (req, res) => {
+  try {
+    const users = await User.find({}, "-password");
+    res.json(users);
+  } catch (error) {
+    console.error("Fetch users error:", error);
+    res.status(500).json({ message: "خطأ في جلب المستخدمين" });
+  }
+});
+
 
 module.exports = router;

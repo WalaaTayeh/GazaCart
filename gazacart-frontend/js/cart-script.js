@@ -1,16 +1,12 @@
-// cart-script.js (معدل مع دعم JWT) --------------------------------------
-document.addEventListener("DOMContentLoaded", () => {
 
-  // ==========================
+document.addEventListener("DOMContentLoaded", () => {
+  
   //  جلب المستخدم الحالي
-  // ==========================
   function getCurrentUser() {
     return JSON.parse(localStorage.getItem("currentUser")) || null;
   }
 
-  // ==========================
   //  إدارة السلة
-  // ==========================
   function getCartKey() {
     const user = getCurrentUser();
     return user ? `cart_${user.phone}` : "cart_guest";
@@ -19,6 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function getCart() {
     return JSON.parse(localStorage.getItem(getCartKey())) || [];
   }
+function sanitizeCart() {
+  let cart = getCart();
+  cart = cart.filter(item => item.id && item.id !== "");
+  saveCart(cart);
+}
+sanitizeCart();
 
   function saveCart(cart) {
     localStorage.setItem(getCartKey(), JSON.stringify(cart));
@@ -211,31 +213,45 @@ document.getElementById("cancelDeleteAll")?.addEventListener("click", () => {
 };
 
 
-  function addToCart(productId, productName, productStore, productPrice, productImage) {
-    let cart = getCart();
-    const existing = cart.find(item => item.id === productId);
-    const item = {
-      id: productId || 'unknown_id',
-      name: productName || 'منتج بدون اسم',
-      store: (typeof productStore === 'string') ? productStore : (productStore && productStore.name) || 'متجر غير معروف',
-      price: Number(productPrice) || 0,
-      image: productImage || 'images/default.png',
-      quantity: 1
-    };
+ function addToCart(productId, productName, productStore, productPrice, productImage) {
+  if (!productId) return;
 
-    if (existing) existing.quantity += 1;
-    else cart.push(item);
+  let storeId = null;
+  let storeName = "متجر غير معروف";
 
-    saveCart(cart);
-    updateCartCount();
-    renderCartItems();
+  if (typeof productStore === "object" && productStore !== null) {
+    storeId = productStore.id;
+    storeName = productStore.name || storeName;
+  } else if (typeof productStore === "string") {
+    storeName = productStore;
   }
+
+  const cart = getCart();
+  const existing = cart.find(item => item.id === productId);
+
+  const item = {
+    id: productId,
+    name: productName || 'منتج بدون اسم',
+    store: storeName,
+    storeId: storeId,
+    price: Number(productPrice) || 0,
+    image: productImage || 'images/default.png',
+    quantity: 1
+  };
+
+  if (existing) existing.quantity += 1;
+  else cart.push(item);
+
+  saveCart(cart);
+  updateCartCount();
+  renderCartItems();
+}
+
 
   window.addToCart = addToCart;
 
-  // ==========================
+
   // init modal listeners
-  // ==========================
   window.cartJsInit = function() {
 
     // الدفع -> checkout
@@ -257,108 +273,124 @@ document.getElementById("cancelDeleteAll")?.addEventListener("click", () => {
       }
     });
 
-    const checkoutForm = document.querySelector("#checkoutModal form");
-    if (!checkoutForm) return;
+   const checkoutForm = document.querySelector("#checkoutModal form");
+if (checkoutForm) {
 
-    checkoutForm.removeEventListener('submit', window.__checkoutSubmitHandler__);
-    const handler = async function(e) {
-      e.preventDefault();
+  checkoutForm.removeEventListener('submit', window.__checkoutSubmitHandler__);
+  const handler = async function(e) {
+    e.preventDefault();
 
-      const form = e.target;
-      form.querySelectorAll(".error-msg").forEach(el => el.remove());
+    const form = e.target;
+    form.querySelectorAll(".error-msg").forEach(el => el.remove());
 
-      const nameInput = form.querySelector('[name="name"]');
-      const addressInput = form.querySelector('[name="address"]');
-      const phoneInput = form.querySelector('[name="phone"]');
-      const backupPhoneInput = form.querySelector('[name="backupPhone"]');
-      let valid = true;
+    const nameInput = form.querySelector('[name="name"]');
+    const addressInput = form.querySelector('[name="address"]');
+    const phoneInput = form.querySelector('[name="phone"]');
+    const backupPhoneInput = form.querySelector('[name="backupPhone"]');
+    let valid = true;
 
-      const showError = (input, message) => {
-        const error = document.createElement("div");
-        error.className = "error-msg";
-        error.textContent = message;
-        Object.assign(error.style, {
-          color: "red",
-          fontSize: "13px",
-          marginTop: "4px",
-          fontFamily: "Cairo, sans-serif"
-        });
-        input.insertAdjacentElement("afterend", error);
-        valid = false;
-      };
+    const showError = (input, message) => {
+      const error = document.createElement("div");
+      error.className = "error-msg";
+      error.textContent = message;
+      Object.assign(error.style, {
+        color: "red",
+        fontSize: "13px",
+        marginTop: "4px",
+        fontFamily: "Cairo, sans-serif"
+      });
+      input.insertAdjacentElement("afterend", error);
+      valid = false;
+    };
 
-      if (!nameInput.value.trim()) showError(nameInput, "الرجاء إدخال الاسم الكامل");
-      if (!addressInput.value.trim()) showError(addressInput, "الرجاء إدخال عنوان التوصيل");
-      if (!phoneInput.value.trim()) showError(phoneInput, "الرجاء إدخال رقم الهاتف");
-      if (!valid) return;
+    if (!nameInput.value.trim()) showError(nameInput, "الرجاء إدخال الاسم الكامل");
+    if (!addressInput.value.trim()) showError(addressInput, "الرجاء إدخال عنوان التوصيل");
+    if (!phoneInput.value.trim()) showError(phoneInput, "الرجاء إدخال رقم الهاتف");
+    if (!valid) return;
 
-      const currentUser = getCurrentUser();
-      if (!currentUser || !currentUser.token) {
-        alert("❌ يجب تسجيل الدخول لإتمام الطلب!");
-        return;
-      }
+    const currentUser = getCurrentUser();
+    if (!currentUser || !currentUser.token) {
+      alert("❌ يجب تسجيل الدخول لإتمام الطلب!");
+      return;
+    }
 
-      const cartKey = `cart_${currentUser.phone}`;
-      const cart = getCart();
-      if (cart.length === 0) {
-        alert("السلة فارغة!");
-        return;
-      }
+    const cart = getCart();
+    if (!cart || cart.length === 0) {
+      alert("السلة فارغة!");
+      return;
+    }
 
-      const receiptInput = document.getElementById("receipt");
-      let receiptFile = receiptInput?.files?.[0] || null;
+    const receiptInput = document.getElementById("receipt");
+    let receiptFile = receiptInput?.files?.[0] || null;
 
-      const formData = new FormData();
-    formData.append("items", JSON.stringify(cart)); //
-    formData.append("totalPrice", cart.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0) + 10);
+    // ✅ فقط المنتجات الصالحة
+const validCart = cart.filter(item => item.id);
+if (validCart.length === 0) {
+  alert("❌ لا يوجد منتجات صالحة في السلة!");
+  return;
+}
+    const formData = new FormData();
+   formData.append("items", JSON.stringify(validCart.map(item => ({
+   product: item.id,   
+  quantity: item.quantity,
+  name: item.name,
+  price: item.price,
+  storeId: item.storeId 
+  
+
+}))));
+
+
+    const totalPrice = validCart.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0) + 10;
+    formData.append("totalPrice", totalPrice);
     formData.append("paymentMethod", receiptFile ? "bank" : "cash");
     formData.append("fullName", nameInput.value.trim());
     formData.append("address", addressInput.value.trim());
     formData.append("phone", phoneInput.value.trim());
     formData.append("altPhone", backupPhoneInput?.value.trim() || "");
-   
-    if (receiptFile) formData.append("paymentProof", receiptFile); 
+    if (receiptFile) formData.append("paymentProof", receiptFile);
 
-try {
-const response = await fetch("https://gazacart.onrender.com/api/orders", {
-  method: "POST",
-  body: formData,
-  headers: {
-    "Authorization": `Bearer ${currentUser.token}`
-  }
-  });
+    try {
+      const response = await fetch("https://gazacart.onrender.com/api/orders", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Authorization": `Bearer ${currentUser.token}`
+        }
+      });
 
-  let data;
-  try { data = await response.json(); } catch(err) { data = {}; }
+      let data;
+      try { data = await response.json(); } catch(err) { data = {}; }
 
-  if (!response.ok) {
-    console.error("❌ خطأ من السيرفر:", data);
-    alert(data.message || "حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.");
-    return;
-  }
+      if (!response.ok) {
+        console.error("❌ خطأ من السيرفر:", data);
+        alert(data.message || "حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.");
+        return;
+      }
 
-  console.log("📦 تم إرسال الطلب بنجاح:", data);
+      console.log("📦 تم إرسال الطلب بنجاح:", data);
 
-  localStorage.removeItem(cartKey);
-  updateCartCount();
-  renderCartItems();
+      // تنظيف السلة
+      localStorage.removeItem(`cart_${currentUser.phone}`);
+      updateCartCount();
+      renderCartItems();
 
-  document.getElementById("checkoutModal").style.display = "none";
- playSuccessSound();
- showToast("✅ تم إرسال الطلب بنجاح!");
+      document.getElementById("checkoutModal").style.display = "none";
+      playSuccessSound();
+      showToast("✅ تم إرسال الطلب بنجاح!");
 
-} catch (err) {
-  console.error("❌ خطأ أثناء الإرسال:", err);
-  alert("حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.");
-}
-    };
-
-    window.__checkoutSubmitHandler__ = handler;
-    checkoutForm.addEventListener('submit', handler);
+    } catch (err) {
+      console.error("❌ خطأ أثناء الإرسال:", err);
+      alert("حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى.");
+    }
   };
 
+  window.__checkoutSubmitHandler__ = handler;
+  checkoutForm.addEventListener('submit', handler);
+}
+  }
   // ==========================
-  // 📢 Toast
+  // Toast
   // ==========================
   function showToast(message) {
     const oldToast = document.querySelector(".toast-message");
